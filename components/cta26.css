@@ -1,0 +1,100 @@
+.cta26-accent2-bg {
+  gap: var(--dl-layout-space-oneandhalfunits);
+  display: flex;
+  transform: translate3d(0px, 0px, 0px) scale3d(1, 1, 1) rotateX(0deg) rotateY(0deg) rotateZ(1deg) skew(0deg, 0deg);
+  align-self: stretch;
+  transition: 0.3s;
+  align-items: center;
+  border-radius: var(--dl-layout-radius-cardradius);
+  justify-content: space-between;
+  transform-style: preserve-3d;
+  background-color: var(--dl-color-theme-accent2);
+}
+ 
+.cta26-accent2-bg:hover {
+  transform: scale3d(1.1,1.1,1.1);
+}
+ 
+.cta26-accent1-bg {
+  width: 100%;
+  display: flex;
+  transform: translate3d(0px, 0px, 0px) scale3d(1, 1, 1) rotateX(0deg) rotateY(0deg) rotateZ(-2deg) skew(0deg, 0deg);
+  align-items: center;
+  border-radius: var(--dl-layout-radius-cardradius);
+  justify-content: space-between;
+  transform-style: preserve-3d;
+  background-color: var(--dl-color-theme-accent1);
+}
+ 
+.cta26-container2 {
+  gap: var(--dl-layout-space-threeunits);
+  width: 100%;
+  display: flex;
+  transform: translate3d(0px, 0px, 0px) scale3d(1, 1, 1) rotateX(0deg) rotateY(0deg) rotateZ(1deg) skew(0deg, 0deg);
+  transition: 0.3s;
+  align-items: center;
+  padding-top: var(--dl-layout-space-sixunits);
+  padding-left: var(--dl-layout-space-fourunits);
+  border-radius: var(--dl-layout-radius-cardradius);
+  padding-right: var(--dl-layout-space-fourunits);
+  padding-bottom: var(--dl-layout-space-sixunits);
+}
+ 
+.cta26-container2:hover {
+  color: var(--dl-color-theme-neutral-light);
+  background-color: var(--dl-color-theme-neutral-dark);
+}
+ 
+.cta26-content {
+  gap: var(--dl-layout-space-oneandhalfunits);
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+}
+ 
+.cta26-image {
+  width: 200px;
+  object-fit: cover;
+}
+ 
+.cta26-fragment {
+  display: contents;
+}
+ 
+.cta26-text2 {
+  display: inline-block;
+}
+ 
+@media(max-width: 991px) {
+  .cta26-accent1-bg {
+    position: relative;
+  }
+  .cta26-container2 {
+    height: 0px;
+  }
+  .cta26-content {
+    position: relative;
+  }
+  .cta26-text1 {
+    top: -76px;
+    left: 50px;
+    position: absolute;
+    align-self: center;
+  }
+  .cta26-image {
+    left: 573px;
+    width: 74px;
+    bottom: 11px;
+    height: 101px;
+    position: absolute;
+    padding-right: 0px;
+  }
+}
+ 
+@media(max-width: 767px) {
+  .cta26-container2 {
+    gap: var(--dl-layout-space-oneandhalfunits);
+    flex-direction: column;
+    justify-content: flex-start;
+  }
+}
