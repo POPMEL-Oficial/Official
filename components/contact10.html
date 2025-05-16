@@ -56,6 +56,12 @@
       href="https://unpkg.com/@teleporthq/teleport-custom-scripts/dist/style.css"
     />
     
+    <!-- Add Swiper CSS -->
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/swiper@8/swiper-bundle.min.css"
+    />
+    
     <!-- Meta Pixel Code -->
     <script>
     !function(f,b,e,v,n,t,s)
@@ -94,6 +100,7 @@
               data-pagination="true"
               data-loop="true"
               data-autoplay="true"
+              data-delay="3000"
               class="contact10-slider swiper"
               ><div data-thq="slider-wrapper" class="swiper-wrapper"
                 ><div
@@ -132,6 +139,36 @@
                 class="swiper-button-next"
               ></div></div></div></div></div
     ></div>
+    <!-- Swiper JS -->
+    <script src="https://unpkg.com/swiper@8/swiper-bundle.min.js"></script>
+    <!-- Custom slider initialization -->
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        const swiperElements = document.querySelectorAll('.swiper');
+        swiperElements.forEach(function(swiperEl) {
+          const options = {
+            slidesPerView: 1,
+            spaceBetween: 10,
+            loop: true,
+            autoplay: {
+              delay: 3000,
+              disableOnInteraction: false,
+            },
+            pagination: {
+              el: '.swiper-pagination',
+              clickable: true,
+            },
+            navigation: {
+              nextEl: '.swiper-button-next',
+              prevEl: '.swiper-button-prev',
+            },
+            touchEventsTarget: 'container',
+            effect: 'slide',
+          };
+          new Swiper(swiperEl, options);
+        });
+      });
+    </script>
     <script
       defer=""
       src="https://unpkg.com/@teleporthq/teleport-custom-scripts"
