@@ -270,14 +270,6 @@
   font-weight: 600;
 }
  
-.navbar8-buttons {
-  gap: var(--dl-layout-space-twounits);
-  display: flex;
-  margin-top: var(--dl-layout-space-twounits);
-  align-items: center;
-  flex-direction: row;
-}
- 
 .navbar8-icon-group {
   gap: var(--dl-layout-space-twounits);
   display: flex;
