@@ -47,27 +47,45 @@
   align-items: center;
   flex-direction: column;
 }
-
-/* New horizontal image layout */
-.contact10-images-container {
-  width: 100%;
+ 
+.contact10-slider {
+  width: 500px;
+  height: 300px;
+  display: inline-block;
+}
+ 
+.contact10-slider-slide1 {
   display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 10px;
-  padding: 10px;
+  background-size: 100%;
+  background-image: url('https://images.unsplash.com/photo-1697384333613-de519c7367c4?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5MTMyMXwwfDF8cmFuZG9tfHx8fHx8fHx8MTY5OTk3NzAzN3w&ixlib=rb-4.0.3&q=80&w=400');
 }
-
-.contact10-image-item {
-  flex: 0 0 auto;
-  margin: 5px;
+ 
+.contact10-slider-slide2 {
+  display: flex;
+  background-size: 100%;
+  background-image: url('https://images.unsplash.com/photo-1697384333613-de519c7367c4?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5MTMyMXwwfDF8cmFuZG9tfHx8fHx8fHx8MTY5OTk3NzAzN3w&ixlib=rb-4.0.3&q=80&w=400');
 }
-
-.contact10-bonus-image {
-  width: 150px;
-  height: 150px;
-  object-fit: cover;
-  border-radius: 8px;
+ 
+.contact10-slider-slide3 {
+  display: flex;
+  background-size: 100%;
+  background-image: url('https://images.unsplash.com/photo-1697384333613-de519c7367c4?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5MTMyMXwwfDF8cmFuZG9tfHx8fHx8fHx8MTY5OTk3NzAzN3w&ixlib=rb-4.0.3&q=80&w=400');
+}
+ 
+.contact10-slider-slide4 {
+  display: flex;
+  background-size: 100%;
+  background-image: url('https://images.unsplash.com/photo-1697384333613-de519c7367c4?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5MTMyMXwwfDF8cmFuZG9tfHx8fHx8fHx8MTY5OTk3NzAzN3w&ixlib=rb-4.0.3&q=80&w=400');
+}
+ 
+.contact10-slider-slide5 {
+  display: flex;
+  background-size: 100%;
+  background-image: url('https://images.unsplash.com/photo-1697384333613-de519c7367c4?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5MTMyMXwwfDF8cmFuZG9tfHx8fHx8fHx8MTY5OTk3NzAzN3w&ixlib=rb-4.0.3&q=80&w=400');
+}
+ 
+.contact10-slider-pagination {
+  display: block;
 }
  
 .contact10-fragment {
@@ -118,27 +136,59 @@
   }
   .contact10-content3 {
     width: 371px;
-    height: auto;
+    height: 202px;
     padding: 0px;
     margin-top: 16px;
     margin-bottom: 16px;
   }
-  
-  /* Mobile styles for the image layout */
-  .contact10-images-container {
-    width: 100%;
-    overflow-x: auto;
-    flex-wrap: nowrap;
-    justify-content: flex-start;
-    padding: 10px 5px;
+  .contact10-slider {
+    width: 359px;
+    height: auto;
+    overflow-x: hidden;
   }
-  
-  .contact10-image-item {
-    margin: 3px;
+  .contact10-slider .swiper-wrapper {
+    display: flex !important;
+    width: 100% !important;
+    justify-content: center;
+    align-items: center;
+    transform: none !important;
+    transition: none !important;
+    padding-left: 0;
+    padding-right: 0;
   }
-  
-  .contact10-bonus-image {
-    width: 120px;
-    height: 120px;
+
+  .contact10-slider .swiper-slide {
+    width: 65px !important;
+    height: 60px !important;
+    margin-right: 8px;
+    flex-shrink: 0;
+    background-size: cover;
+    background-position: center;
+  }
+
+  .contact10-slider .swiper-slide:last-child {
+    margin-right: 0;
+  }
+
+  .contact10-slider-slide1 {
+    background-image: url("public/BONUS/bonus2-200h.jpg");
+  }
+  .contact10-slider-slide2 {
+    background-image: url("public/BONUS/bonus1-200h.jpg");
+  }
+  .contact10-slider-slide3 {
+    background-image: url("public/BONUS/bonus3-200h.jpg");
+  }
+  .contact10-slider-slide4 {
+    background-image: url("public/BONUS/bonus4-200h.jpg");
+  }
+  .contact10-slider-slide5 {
+    background-image: url("public/BONUS/bonus5-200h.jpg");
+  }
+
+  .contact10-slider .contact10-slider-pagination,
+  .contact10-slider .swiper-button-prev,
+  .contact10-slider .swiper-button-next {
+    display: none !important;
   }
 }
