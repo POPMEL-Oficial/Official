@@ -3,10 +3,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // document.getElementById('gp-logo').src = window.placeholderImages.googlePlayLogo;
     // document.getElementById('dev-badge').src = window.placeholderImages.topDeveloperBadge;
     // document.getElementById('app-icon').src = window.placeholderImages.appIcon;
-    document.getElementById('promo1').src = window.placeholderImages.promo1;
-    document.getElementById('promo2').src = window.placeholderImages.promo2;
-    document.getElementById('promo3').src = window.placeholderImages.promo3;
-
+    // Promo images are now directly set in HTML with placeholder.com URLs
+    
     // Carousel functionality
     const track = document.querySelector('.carousel-track');
     const items = document.querySelectorAll('.carousel-item');
@@ -16,18 +14,29 @@ document.addEventListener('DOMContentLoaded', () => {
     
     let currentIndex = 0;
     const itemWidth = items[0].offsetWidth + 12; // Including margin
+    const totalItems = items.length;
+    const indicatorsToShow = 3; // We want to show only 3 indicators
     
-    // Create indicators
-    items.forEach((_, index) => {
+    // Clear any existing indicators
+    indicatorsContainer.innerHTML = '';
+    
+    // Create only 3 indicators
+    for (let i = 0; i < indicatorsToShow; i++) {
         const indicator = document.createElement('div');
         indicator.classList.add('indicator');
-        if (index === 0) indicator.classList.add('active');
+        if (i === 0) indicator.classList.add('active');
         indicatorsContainer.appendChild(indicator);
         
         indicator.addEventListener('click', () => {
-            goToSlide(index);
+            // Map the 3 indicators to 5 slides
+            let targetIndex;
+            if (i === 0) targetIndex = 0; // First indicator -> First slide
+            else if (i === 1) targetIndex = Math.floor(totalItems / 2); // Middle indicator -> Middle slide
+            else targetIndex = totalItems - 1; // Last indicator -> Last slide
+            
+            goToSlide(targetIndex);
         });
-    });
+    }
     
     const indicators = document.querySelectorAll('.indicator');
     
@@ -36,12 +45,12 @@ document.addEventListener('DOMContentLoaded', () => {
         if (currentIndex > 0) {
             goToSlide(currentIndex - 1);
         } else {
-            goToSlide(items.length - 1); // Go to last slide
+            goToSlide(totalItems - 1); // Go to last slide
         }
     });
     
     nextButton.addEventListener('click', () => {
-        if (currentIndex < items.length - 1) {
+        if (currentIndex < totalItems - 1) {
             goToSlide(currentIndex + 1);
         } else {
             goToSlide(0); // Go to first slide
@@ -58,8 +67,14 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     
     function updateIndicators() {
+        // Update which indicator should be active based on current slide
+        let activeIndicator;
+        if (currentIndex === 0) activeIndicator = 0; // First slide -> First indicator
+        else if (currentIndex === totalItems - 1) activeIndicator = indicatorsToShow - 1; // Last slide -> Last indicator
+        else activeIndicator = 1; // All middle slides -> Middle indicator
+        
         indicators.forEach((indicator, index) => {
-            if (index === currentIndex) {
+            if (index === activeIndicator) {
                 indicator.classList.add('active');
             } else {
                 indicator.classList.remove('active');
@@ -88,17 +103,6 @@ document.addEventListener('DOMContentLoaded', () => {
             // Add active class to clicked item
             item.classList.add('active');
         });
-    });
-    
-    // Install button effect
-    const installBtn = document.querySelector('.install-btn');
-    
-    installBtn.addEventListener('click', () => {
-        installBtn.textContent = 'Instalando...';
-        setTimeout(() => {
-            installBtn.innerHTML = '<i class="fas fa-check"></i> Instalado';
-            installBtn.style.backgroundColor = '#4caf50';
-        }, 2000);
     });
     
     // Device selector

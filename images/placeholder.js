@@ -50,37 +50,6 @@ const appIcon = `
 </svg>
 `;
 
-// Promo Images - Portrait format for carousel
-const promo1 = `
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 140 280" width="140" height="280">
-  <rect width="140" height="280" fill="#FFA000"/>
-  <circle cx="70" cy="100" r="50" fill="#FFD700"/>
-  <text x="70" y="200" font-family="Impact" font-size="18" fill="#FFFFFF" text-anchor="middle">BONUS DE</text>
-  <text x="70" y="220" font-family="Impact" font-size="18" fill="#FFFFFF" text-anchor="middle">BOAS VINDAS</text>
-  <text x="70" y="250" font-family="Impact" font-size="24" fill="#FFFFFF" text-anchor="middle">R$ 203</text>
-</svg>
-`;
-
-const promo2 = `
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 140 280" width="140" height="280">
-  <rect width="140" height="280" fill="#8E24AA"/>
-  <circle cx="70" cy="100" r="40" fill="#D1C4E9"/>
-  <text x="70" y="200" font-family="Impact" font-size="18" fill="#FFFFFF" text-anchor="middle">BÔNUS DE</text>
-  <text x="70" y="220" font-family="Impact" font-size="18" fill="#FFFFFF" text-anchor="middle">INDICAÇÃO</text>
-  <text x="70" y="250" font-family="Impact" font-size="24" fill="#FFFFFF" text-anchor="middle">ATÉ R$100</text>
-</svg>
-`;
-
-const promo3 = `
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 140 280" width="140" height="280">
-  <rect width="140" height="280" fill="#D32F2F"/>
-  <circle cx="70" cy="70" r="50" fill="#FF5252" opacity="0.7"/>
-  <circle cx="70" cy="90" r="30" fill="#FFCDD2"/>
-  <text x="70" y="190" font-family="Impact" font-size="18" fill="#FFFFFF" text-anchor="middle">MEGA</text>
-  <text x="70" y="220" font-family="Impact" font-size="24" fill="#FFFFFF" text-anchor="middle">JACKPOT</text>
-</svg>
-`;
-
 // Convert SVG to data URL
 function svgToDataURL(svg) {
   return 'data:image/svg+xml;base64,' + btoa(svg);
@@ -90,10 +59,7 @@ function svgToDataURL(svg) {
 window.placeholderImages = {
   // googlePlayLogo: svgToDataURL(googlePlayLogo),
   // topDeveloperBadge: svgToDataURL(topDeveloperBadge),
-  appIcon: svgToDataURL(appIcon),
-  promo1: svgToDataURL(promo1),
-  promo2: svgToDataURL(promo2),
-  promo3: svgToDataURL(promo3)
+  appIcon: svgToDataURL(appIcon)
 };
 
 // Set images when DOM is loaded
@@ -102,9 +68,4 @@ document.addEventListener('DOMContentLoaded', function() {
   // document.getElementById('gp-logo').src = window.placeholderImages.googlePlayLogo;
   // document.getElementById('dev-badge').src = window.placeholderImages.topDeveloperBadge;
   document.getElementById('app-icon').src = window.placeholderImages.appIcon;
-  
-  // Set carousel images
-  document.getElementById('promo1').src = window.placeholderImages.promo1;
-  document.getElementById('promo2').src = window.placeholderImages.promo2;
-  document.getElementById('promo3').src = window.placeholderImages.promo3;
 }); 
