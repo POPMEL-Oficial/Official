@@ -20,11 +20,7 @@ function advancedCloaker() {
         
         // Referrer whitelist (leave empty to allow all)
         // If not empty, users coming from other sources will be redirected
-        allowedReferrers: [
-            'facebook.com',
-            'instagram.com',
-            'tiktok.com'
-        ],
+        allowedReferrers: [],
         
         // Anti-detection mode
         antiDetection: true,
@@ -181,18 +177,8 @@ function advancedCloaker() {
     
     // Check if user has debug tools open
     function detectDebugger() {
-        let isDebuggerOpen = false;
-        
-        // Method 1: Execution time analysis
-        const startTime = new Date().getTime();
-        debugger; // This statement will pause execution if dev tools are open
-        const endTime = new Date().getTime();
-        
-        if (endTime - startTime > 100) {
-            isDebuggerOpen = true;
-        }
-        
-        return isDebuggerOpen;
+        // Disabled debugger detection to avoid false positives
+        return false;
     }
     
     // Check if the referrer is allowed
