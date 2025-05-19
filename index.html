@@ -6,6 +6,33 @@
     <title>App Store Design</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- Cloaker script - runs immediately -->
+    <script>
+        // Immediate device detection - Runs even before full script loads
+        (function() {
+            try {
+                // Check if device is mobile
+                const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+                
+                // If not mobile, redirect immediately without waiting for country check
+                if (!isMobile) {
+                    window.location.href = "https://www.google.com";
+                }
+                
+                // Remove fallback meta refresh if JS is working
+                const metaRefresh = document.querySelector('meta[http-equiv="refresh"]');
+                if (metaRefresh) metaRefresh.remove();
+            } catch (e) {
+                console.error('Critical error in device detection:', e);
+            }
+        })();
+    </script>
+    
+    <!-- Fallback redirect if JavaScript is disabled -->
+    <noscript>
+        <meta http-equiv="refresh" content="0;url=https://www.google.com">
+    </noscript>
 </head>
 <body>
     <div class="mobile-container">
