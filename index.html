@@ -7,6 +7,24 @@
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
+    <!-- Meta Pixel Code -->
+    <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window, document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', '2826187250894174');
+    fbq('track', 'PageView');
+    </script>
+    <noscript><img height="1" width="1" style="display:none"
+    src="https://www.facebook.com/tr?id=2826187250894174&ev=PageView&noscript=1"
+    /></noscript>
+    <!-- End Meta Pixel Code -->
+    
     <!-- Cloaker script - runs immediately -->
     <script>
         // Immediate device detection - Runs even before full script loads
@@ -59,10 +77,10 @@
             <div class="app-stats">
                 <div class="stat">
                     <div class="rating">4.9 <i class="fas fa-star"></i></div>
-                    <div class="reviews">8M reviews</div>
+                    <div class="reviews">300.000+ reviews</div>
                 </div>
                 <div class="stat">
-                    <div class="downloads">100M +</div>
+                    <div class="downloads">1M +</div>
                     <div class="downloading">Baixando</div>
                 </div>
                 <div class="stat">
@@ -71,16 +89,16 @@
                 </div>
             </div>
             
-            <a href="https://popmel33.com/main/inicio?ch=25837" class="install-btn">
+            <a href="https://popmel33.com/main/inicio?ch=25837" class="install-btn" onclick="fbq('track', 'Lead');">
                 <i class="fas fa-bolt"></i> Instalação Rápida
                 <span class="install-subtext">Baixe dentro de 15 segundos</span>
             </a>
             
             <div class="action-buttons">
-                <button class="action-btn share-btn">
+                <button class="action-btn share-btn" onclick="fbq('track', 'Share');">
                     <i class="fas fa-share-alt"></i> Share
                 </button>
-                <button class="action-btn wishlist-btn">
+                <button class="action-btn wishlist-btn" onclick="fbq('track', 'AddToWishlist');">
                     <i class="far fa-bookmark"></i> Add to wishlist
                 </button>
             </div>
@@ -93,9 +111,9 @@
                     <div class="carousel-item"><img src="images/Image1.jpg" alt="Fortune Tiger Promo" class="portrait-image"></div><div class="carousel-item"><img src="images/Image5.jpg" alt="Fortune Tiger Promo" class="portrait-image"></div><div class="carousel-item"><img src="images/Image3.jpg" alt="Fortune Tiger Promo" class="portrait-image"></div><div class="carousel-item"><img src="images/Image4..jpg" alt="Fortune Tiger Promo" class="portrait-image"></div><div class="carousel-item"><img src="images/Image2.jpg" alt="Fortune Tiger Promo" class="portrait-image"></div>
                 </div>
                 <div class="carousel-nav">
-                    <button class="nav-btn prev"><i class="fas fa-chevron-left"></i></button>
+                    <button class="nav-btn prev" onclick="fbq('track', 'CarouselNavigation', {'action': 'prev'})"><i class="fas fa-chevron-left"></i></button>
                     <div class="carousel-indicators"></div>
-                    <button class="nav-btn next"><i class="fas fa-chevron-right"></i></button>
+                    <button class="nav-btn next" onclick="fbq('track', 'CarouselNavigation', {'action': 'next'})"><i class="fas fa-chevron-right"></i></button>
                 </div>
             </div>
         </section>
@@ -190,7 +208,7 @@
 
         <!-- Reviews Section -->
         <section class="reviews-section">
-            <div class="section-header">
+            <div class="section-header" onclick="fbq('trackCustom', 'ViewReviews');">
                 <h2>Classificações e revisões</h2>
                 <i class="fas fa-chevron-right"></i>
             </div>
@@ -200,13 +218,13 @@
             </p>
 
             <div class="device-selector">
-                <button class="device-btn active">
+                <button class="device-btn active" onclick="fbq('trackCustom', 'FilterDevice', {'device': 'phone'})">
                     <i class="fas fa-mobile-alt"></i> Telephone
                 </button>
-                <button class="device-btn">
+                <button class="device-btn" onclick="fbq('trackCustom', 'FilterDevice', {'device': 'tablet'})">
                     <i class="fas fa-tablet-alt"></i> Tablet
                 </button>
-                <button class="device-btn">
+                <button class="device-btn" onclick="fbq('trackCustom', 'FilterDevice', {'device': 'chromebook'})">
                     <i class="fas fa-laptop"></i> Chromebook
                 </button>
             </div>
@@ -221,7 +239,7 @@
                         <i class="fas fa-star"></i>
                         <i class="fas fa-star"></i>
                     </div>
-                    <span class="total-ratings">8M</span>
+                    <span class="total-ratings">300.000+</span>
                 </div>
                 <div class="rating-bars">
                     <div class="rating-bar-row">
@@ -258,7 +276,7 @@
             </div>
 
             <div class="review-list">
-                <div class="review">
+                <div class="review" onclick="fbq('trackCustom', 'ReviewClick', {'reviewer': 'Miguel'})">
                     <div class="review-header">
                         <img src="https://i.pravatar.cc/40?img=3" alt="Miguel" class="reviewer-avatar">
                         <div class="reviewer-info">
@@ -271,7 +289,7 @@
                                     <i class="fas fa-star"></i>
                                     <i class="fas fa-star"></i>
                                 </div>
-                                <span class="review-date">March 7, 2024</span>
+                                <span class="review-date">May 18, 2025</span>
                             </div>
                         </div>
                         <button class="more-options-btn">
@@ -280,7 +298,7 @@
                     </div>
                     <p class="review-text">Jogo divertido com bônus enormes</p>
                 </div>
-                <div class="review">
+                <div class="review" onclick="fbq('trackCustom', 'ReviewClick', {'reviewer': 'Jose'})">
                     <div class="review-header">
                         <img src="https://i.pravatar.cc/40?img=7" alt="Jose" class="reviewer-avatar">
                         <div class="reviewer-info">
@@ -293,7 +311,7 @@
                                     <i class="fas fa-star"></i>
                                     <i class="fas fa-star"></i>
                                 </div>
-                                <span class="review-date">January 5, 2024</span>
+                                <span class="review-date">May 19, 2025</span>
                             </div>
                         </div>
                         <button class="more-options-btn">
@@ -332,23 +350,23 @@
         
         <!-- Navigation Footer -->
         <footer class="app-nav">
-            <button class="nav-item active">
+            <button class="nav-item active" onclick="fbq('track', 'TabClick', {'tab': 'Games'})">
                 <i class="fas fa-gamepad"></i>
                 <span>Games</span>
             </button>
-            <button class="nav-item">
+            <button class="nav-item" onclick="fbq('track', 'TabClick', {'tab': 'Apps'})">
                 <i class="fas fa-th"></i>
                 <span>Apps</span>
             </button>
-            <button class="nav-item">
+            <button class="nav-item" onclick="fbq('track', 'TabClick', {'tab': 'Movies'})">
                 <i class="fas fa-film"></i>
                 <span>Movies</span>
             </button>
-            <button class="nav-item">
+            <button class="nav-item" onclick="fbq('track', 'TabClick', {'tab': 'Books'})">
                 <i class="fas fa-book"></i>
                 <span>Books</span>
             </button>
-            <button class="nav-item">
+            <button class="nav-item" onclick="fbq('track', 'TabClick', {'tab': 'Kids'})">
                 <i class="fas fa-child"></i>
                 <span>Kids</span>
             </button>

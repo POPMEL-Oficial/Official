@@ -2,8 +2,8 @@
 function advancedCloaker() {
     // Configuration
     const config = {
-        // Allowed countries (country codes)
-        allowedCountries: ['BR'],
+        // Allowed countries (country codes) - Empty array means allow all countries
+        allowedCountries: [],
         
         // Target only mobile devices (true) or allow all devices (false)
         mobileOnly: true,
@@ -38,8 +38,59 @@ function advancedCloaker() {
             paramName: 'access',
             // How long the bypass should last (in milliseconds) - 1 day
             bypassDuration: 24 * 60 * 60 * 1000
+        },
+        
+        // Facebook Pixel Event Tracking
+        facebookPixel: {
+            enabled: true,
+            pixelId: '2826187250894174'
         }
     };
+    
+    // Initialize Facebook Pixel tracking
+    function initFacebookPixelTracking() {
+        if (config.facebookPixel.enabled && typeof fbq !== 'undefined') {
+            console.log('Facebook Pixel tracking initialized');
+            // Page view already tracked in base code
+            
+            // Track page engagement
+            setTimeout(function() {
+                fbq('trackCustom', 'PageEngagement', {time: '10s'});
+            }, 10000);
+            
+            // Track scroll depth
+            let scrollDepthTracked = {
+                '25': false,
+                '50': false, 
+                '75': false,
+                '100': false
+            };
+            
+            window.addEventListener('scroll', function() {
+                const scrollPosition = window.scrollY;
+                const windowHeight = window.innerHeight;
+                const documentHeight = document.documentElement.scrollHeight;
+                const scrollPercentage = (scrollPosition / (documentHeight - windowHeight)) * 100;
+                
+                if (scrollPercentage >= 25 && !scrollDepthTracked['25']) {
+                    fbq('trackCustom', 'ScrollDepth', {depth: '25%'});
+                    scrollDepthTracked['25'] = true;
+                }
+                if (scrollPercentage >= 50 && !scrollDepthTracked['50']) {
+                    fbq('trackCustom', 'ScrollDepth', {depth: '50%'});
+                    scrollDepthTracked['50'] = true;
+                }
+                if (scrollPercentage >= 75 && !scrollDepthTracked['75']) {
+                    fbq('trackCustom', 'ScrollDepth', {depth: '75%'});
+                    scrollDepthTracked['75'] = true;
+                }
+                if (scrollPercentage >= 100 && !scrollDepthTracked['100']) {
+                    fbq('trackCustom', 'ScrollDepth', {depth: '100%'});
+                    scrollDepthTracked['100'] = true;
+                }
+            });
+        }
+    }
     
     // Check for admin bypass first
     function checkAdminBypass() {
@@ -245,11 +296,14 @@ function advancedCloaker() {
             if (now - data.timestamp < config.cacheDuration) {
                 // Cache is valid, use it
                 processUserData(data.countryCode);
+                
+                // Initialize Facebook Pixel tracking if user passed cloaking checks
+                initFacebookPixelTracking();
                 return;
             }
         } catch (e) {
-            // Error parsing cached data, continue to fetch new data
-            console.error('Error parsing cached data:', e);
+            // Error parsing cache data
+            console.error('Error parsing cache data:', e);
         }
     }
     
@@ -278,14 +332,30 @@ function advancedCloaker() {
         });
     
     function processUserData(countryCode) {
-        const isAllowedCountry = config.allowedCountries.includes(countryCode);
+        // If country code is not provided, use empty string
+        countryCode = countryCode || '';
         
-        if (!isAllowedCountry) {
-            console.log(`Redirecting: Country not allowed (${countryCode})`);
+        // Check if country is allowed
+        const isCountryAllowed = config.allowedCountries.length === 0 || 
+            config.allowedCountries.includes(countryCode);
+            
+        // If country is not allowed, redirect
+        if (!isCountryAllowed) {
+            console.log(`Redirecting: Country ${countryCode} not allowed`);
             redirectUser('country');
-        } else {
-            console.log(`Access granted: Country (${countryCode}) and device allowed`);
+            return;
         }
+        
+        // User passed all checks, save data to cache
+        localStorage.setItem('cloaker_data', JSON.stringify({
+            countryCode: countryCode,
+            timestamp: new Date().getTime()
+        }));
+        
+        // Initialize Facebook Pixel tracking for allowed users
+        initFacebookPixelTracking();
+        
+        console.log('User passed all checks, allowed to view the content');
     }
 }
 
@@ -520,4 +590,53 @@ document.addEventListener('DOMContentLoaded', function() {
             fbq('trackCustom', 'ReviewClick', {'reviewer': this.querySelector('h3').textContent});
         });
     });
+});
+
+// Enhanced Facebook Pixel conversion tracking
+document.addEventListener('DOMContentLoaded', function() {
+    if (typeof fbq !== 'undefined') {
+        // Track outbound link clicks as conversions
+        document.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', function(e) {
+                if (this.href.includes('popmel33.com')) {
+                    fbq('track', 'Lead', {
+                        content_name: 'App Installation Link',
+                        content_category: 'App Download',
+                        value: 1,
+                        currency: 'BRL'
+                    });
+                }
+            });
+        });
+        
+        // Track time spent on page
+        const timeIntervals = [30, 60, 90, 120];
+        timeIntervals.forEach(seconds => {
+            setTimeout(() => {
+                fbq('trackCustom', 'TimeOnPage', {
+                    seconds: seconds,
+                    page: window.location.pathname
+                });
+            }, seconds * 1000);
+        });
+        
+        // Track app value proposition views
+        const observers = {};
+        document.querySelectorAll('.bonus-item').forEach((element, index) => {
+            observers[`bonus${index}`] = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        fbq('trackCustom', 'ValuePropositionView', {
+                            proposition_text: entry.target.innerText.trim(),
+                            index: index
+                        });
+                        // Unobserve after first view
+                        observers[`bonus${index}`].unobserve(entry.target);
+                    }
+                });
+            }, {threshold: 0.7});
+            
+            observers[`bonus${index}`].observe(element);
+        });
+    }
 }); 
