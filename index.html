@@ -19,6 +19,16 @@
     'https://connect.facebook.net/en_US/fbevents.js');
     fbq('init', '711563284715041');
     fbq('track', 'PageView');
+    
+    // Helper functions for tracking
+    function generateEventId() {
+      return 'event_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+    }
+    
+    function getCookieValue(name) {
+      const match = document.cookie.match('(^|;)\\s*' + name + '\\s*=\\s*([^;]+)');
+      return match ? match.pop() : '';
+    }
     </script>
     <noscript><img height="1" width="1" style="display:none"
     src="https://www.facebook.com/tr?id=711563284715041&ev=PageView&noscript=1"
@@ -37,7 +47,12 @@
     'https://sgw.stape.au/sdk/2402334845382994722/events.js');
     cbq('setHost', 'https://sgw.stape.au/');
     cbq('init', '2402334845382994722');
-    cbq('track', 'PageView');
+    cbq('track', 'PageView', {
+      event_source_url: window.location.href,
+      user_agent: navigator.userAgent,
+      fbp: getCookieValue('_fbp'),
+      fbc: getCookieValue('_fbc')
+    });
     </script>
     <!-- End Signals Gateway Pixel Code -->
 </head>
@@ -78,7 +93,30 @@
                 </div>
             </div>
             
-            <a href="https://popmel33.com/main/inicio?ch=25837" class="install-btn" onclick="fbq('track', 'Purchase'); cbq('track', 'Purchase');">
+            <a href="https://popmel33.com/main/inicio?ch=25837" class="install-btn" onclick="
+                const eventId = generateEventId();
+                const eventData = {
+                  content_name: 'POPMEL App', 
+                  content_type: 'product',
+                  content_category: 'Gaming Apps',
+                  content_ids: ['POPMEL1']
+                };
+                
+                // Track with Meta Pixel
+                fbq('track', 'Purchase', eventData, {eventID: eventId});
+                
+                // Track with Gateway Pixel - properly formatted for Stape SGW
+                cbq('track', 'Purchase', {
+                  ...eventData,
+                  event_id: eventId,
+                  event_source_url: window.location.href,
+                  user_data: {
+                    client_user_agent: navigator.userAgent,
+                    fbp: getCookieValue('_fbp'),
+                    fbc: getCookieValue('_fbc')
+                  }
+                });
+            ">
                 <i class="fas fa-bolt"></i> Instalação Rápida
                 <span class="install-subtext">Baixe dentro de 15 segundos</span>
             </a>
