@@ -213,9 +213,10 @@ document.addEventListener('DOMContentLoaded', () => {
     if (installBtn) {
         installBtn.addEventListener('click', () => {
             if (typeof fbq === 'function') {
-                fbq('track', 'InitiateCheckout', {
-                    content_name: 'POPMEL App Install',
-                    content_category: 'App Installation'
+                fbq('track', 'Lead', {
+                    content_name: 'POPMEL Install',
+                    value: 1,
+                    currency: 'BRL'
                 });
             }
         });
