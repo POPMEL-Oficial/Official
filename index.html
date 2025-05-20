@@ -576,7 +576,7 @@
     // Initialize popup
     applyPopupConfig();
     
-    // Show popup when install button is clicked
+    // Short popup when install button is clicked
     installButton.addEventListener('click', function(e) {
         e.preventDefault();
         
@@ -674,14 +674,20 @@
     
     // Track continue button click
     continueButton.addEventListener('click', function() {
-        // Track with Meta Pixel
-        fbq('track', 'Purchase', {
-            content_name: 'POPMEL App',
-            content_category: 'Gaming Apps'
-        });
+        // Generate unique ID for this specific event
+        const continueEventId = generateEventId() + '_continue';
         
-        // Track with Gateway Pixel
-        cbq('track', 'Purchase', {
+        // Track with Meta Pixel - with different event name and ID
+        fbq('track', 'CompleteInstallation', {
+            content_name: 'POPMEL App Installation',
+            content_category: 'Gaming Apps',
+            content_type: 'product_installation',
+            step: 'final'
+        }, {eventID: continueEventId});
+        
+        // Track with Gateway Pixel - with different event name and ID
+        cbq('track', 'CompleteInstallation', {
+            event_id: continueEventId,
             event_source_url: window.location.href,
             user_data: {
                 client_user_agent: navigator.userAgent,
@@ -689,8 +695,10 @@
                 fbc: getCookieValue('_fbc')
             },
             custom_data: {
-                content_name: 'POPMEL App',
-                content_category: 'Gaming Apps'
+                content_name: 'POPMEL App Installation',
+                content_category: 'Gaming Apps',
+                content_type: 'product_installation',
+                step: 'final'
             }
         });
     });
