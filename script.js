@@ -1,4 +1,10 @@
 document.addEventListener('DOMContentLoaded', () => {
+    // Facebook Pixel configuration
+    const facebookPixelConfig = {
+        enabled: true,
+        pixelId: '711563284715041'
+    };
+    
     // Set placeholder images - logo, badge, and app icon removed
     // document.getElementById('gp-logo').src = window.placeholderImages.googlePlayLogo;
     // document.getElementById('dev-badge').src = window.placeholderImages.topDeveloperBadge;
@@ -268,100 +274,57 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
-// Facebook Pixel Enhanced Tracking
+// Enhanced Facebook Pixel conversion tracking
 document.addEventListener('DOMContentLoaded', function() {
-    // Track scrolling depth
-    let scrollDepthTracked = {
-        '25': false,
-        '50': false,
-        '75': false,
-        '100': false
-    };
-    
-    window.addEventListener('scroll', function() {
-        const scrollPosition = window.scrollY;
-        const windowHeight = window.innerHeight;
-        const documentHeight = document.documentElement.scrollHeight;
-        const scrollPercentage = (scrollPosition / (documentHeight - windowHeight)) * 100;
-        
-        if (scrollPercentage >= 25 && !scrollDepthTracked['25']) {
-            fbq('trackCustom', 'ScrollDepth', {'depth': '25%'});
-            scrollDepthTracked['25'] = true;
-        }
-        if (scrollPercentage >= 50 && !scrollDepthTracked['50']) {
-            fbq('trackCustom', 'ScrollDepth', {'depth': '50%'});
-            scrollDepthTracked['50'] = true;
-        }
-        if (scrollPercentage >= 75 && !scrollDepthTracked['75']) {
-            fbq('trackCustom', 'ScrollDepth', {'depth': '75%'});
-            scrollDepthTracked['75'] = true;
-        }
-        if (scrollPercentage >= 100 && !scrollDepthTracked['100']) {
-            fbq('trackCustom', 'ScrollDepth', {'depth': '100%'});
-            scrollDepthTracked['100'] = true;
-        }
-    });
-    
-    // Track time spent on page
-    setTimeout(function() {
-        fbq('trackCustom', 'TimeOnPage', {'duration': '30 seconds'});
-    }, 30000);
-    
-    setTimeout(function() {
-        fbq('trackCustom', 'TimeOnPage', {'duration': '60 seconds'});
-    }, 60000);
-    
-    // Track clicks on review items
-    document.querySelectorAll('.review').forEach(function(review) {
-        review.addEventListener('click', function() {
-            fbq('trackCustom', 'ReviewClick', {'reviewer': this.querySelector('h3').textContent});
-        });
-    });
-    
-    // Track when user views certain sections by scrolling (using Intersection Observer)
-    const sections = document.querySelectorAll('section');
-    if (sections.length && 'IntersectionObserver' in window) {
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    const sectionClass = entry.target.className;
-                    fbq('trackCustom', 'SectionView', {
-                        section_name: sectionClass
+    if (typeof fbq !== 'undefined') {
+        // Track outbound link clicks as conversions
+        document.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', function(e) {
+                if (this.href.includes('popmel33.com')) {
+                    fbq('track', 'Lead', {
+                        content_name: 'App Installation Link',
+                        content_category: 'App Download',
+                        value: 1,
+                        currency: 'BRL'
                     });
                 }
             });
-        }, {threshold: 0.5});
+        });
         
-        sections.forEach(section => {
-            observer.observe(section);
+        // Track time spent on page
+        const timeIntervals = [30, 60, 90, 120];
+        timeIntervals.forEach(seconds => {
+            setTimeout(() => {
+                fbq('trackCustom', 'TimeOnPage', {
+                    seconds: seconds,
+                    page: window.location.pathname
+                });
+            }, seconds * 1000);
+        });
+        
+        // Track app value proposition views
+        const observers = {};
+        document.querySelectorAll('.bonus-item').forEach((element, index) => {
+            observers[`bonus${index}`] = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        fbq('trackCustom', 'ValuePropositionView', {
+                            proposition_text: entry.target.innerText.trim(),
+                            index: index
+                        });
+                        // Unobserve after first view
+                        observers[`bonus${index}`].unobserve(entry.target);
+                    }
+                });
+            }, {threshold: 0.7});
+            
+            observers[`bonus${index}`].observe(element);
         });
     }
-    
-    // Additional custom events
-    
-    // Track device selector buttons
-    document.querySelectorAll('.device-btn').forEach(function(button) {
-        button.addEventListener('click', function() {
-            const deviceType = this.querySelector('span') ? 
-                               this.querySelector('span').textContent : 
-                               this.querySelector('i').className.includes('mobile') ? 'Mobile' :
-                               this.querySelector('i').className.includes('tablet') ? 'Tablet' : 'Chromebook';
-            
-            fbq('trackCustom', 'DeviceSelection', {'device_type': deviceType});
-        });
-    });
-    
-    // Track clicks on tag buttons
-    document.querySelectorAll('.app-tags .tag').forEach(function(tag) {
-        tag.addEventListener('click', function() {
-            fbq('trackCustom', 'TagClick', {'tag_name': this.textContent});
-        });
-    });
-    
-    // Track outbound link clicks in footer
-    document.querySelectorAll('.footer-links a').forEach(function(link) {
-        link.addEventListener('click', function() {
-            fbq('trackCustom', 'OutboundLinkClick', {'link_text': this.textContent, 'link_url': this.href});
-        });
-    });
-}); 
+});
+
+// Facebook Pixel Event Tracking
+facebookPixel: {
+    enabled: true,
+    pixelId: '711563284715041'
+} 
