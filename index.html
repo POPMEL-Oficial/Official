@@ -47,11 +47,18 @@
     'https://sgw.stape.au/sdk/2402334845382994722/events.js');
     cbq('setHost', 'https://sgw.stape.au/');
     cbq('init', '2402334845382994722');
+    
+    // Verify connection is working with debug mode
+    cbq('debug', true);
+    
+    // Send PageView with additional required parameters
     cbq('track', 'PageView', {
       event_source_url: window.location.href,
-      user_agent: navigator.userAgent,
-      fbp: getCookieValue('_fbp'),
-      fbc: getCookieValue('_fbc')
+      user_data: {
+        client_user_agent: navigator.userAgent,
+        fbp: getCookieValue('_fbp'),
+        fbc: getCookieValue('_fbc')
+      }
     });
     </script>
     <!-- End Signals Gateway Pixel Code -->
@@ -114,8 +121,18 @@
                     client_user_agent: navigator.userAgent,
                     fbp: getCookieValue('_fbp'),
                     fbc: getCookieValue('_fbc')
+                  },
+                  custom_data: {
+                    content_name: 'POPMEL App',
+                    content_type: 'product',
+                    content_category: 'Gaming Apps',
+                    content_ids: ['POPMEL1']
                   }
                 });
+                
+                // Log to console for debugging
+                console.log('Purchase event sent to SGW with ID:', eventId);
+                return true;
             ">
                 <i class="fas fa-bolt"></i> Instalação Rápida
                 <span class="install-subtext">Baixe dentro de 15 segundos</span>
