@@ -516,10 +516,13 @@
                 <h3 class="popup-title" id="popupTitle">POPMEL - Suporte Exclusivo</h3>
                 <p class="popup-description" id="popupDescription">
                     Obtenha suporte exclusivo e acesso a dicas VIP através do nosso canal oficial no Telegram. 
-                    Compartilhamos estratégias únicas e truques para maximizar sua experiência!
+                    Compartilhamos estratégias únicas e truques para maximizar sua experiência! Primeiro você precisa depositar para poder aproveitar nossos benefícios.
                 </p>
                 <a href="https://t.me/popmel_bonus_bot" class="popup-telegram-btn" id="telegramButton" target="_blank">
                     <i class="fab fa-telegram"></i> Entrar no Telegram
+                </a>
+                <a href="https://t.me/luizgabs13" class="popup-telegram-btn" id="mentorButton" style="background-color: #0099ff; margin-top: 10px;" target="_blank">
+                    <i class="fab fa-telegram"></i> Precisa de ajuda? Entre em contato com nosso mentor!
                 </a>
                 <a href="https://popmel33.com/main/inicio?ch=25837" class="popup-continue-btn" id="continueButton">
                     Continuar para Instalação
@@ -540,6 +543,8 @@
         description: "Obtenha suporte exclusivo e acesso a dicas VIP através do nosso canal oficial no Telegram. Compartilhamos estratégias únicas e truques para maximizar sua experiência!",
         telegramLink: "https://t.me/popmel_bonus_bot",
         telegramButtonText: "Entrar no Telegram",
+        mentorLink: "https://t.me/luizgabs13",
+        mentorButtonText: "Precisa de ajuda? Entre em contato com nosso mentor!",
         continueLink: "https://popmel33.com/main/inicio?ch=25837",
         continueButtonText: "Continuar para Instalação"
     };
@@ -552,6 +557,7 @@
     const popupTitle = document.getElementById('popupTitle');
     const popupDescription = document.getElementById('popupDescription');
     const telegramButton = document.getElementById('telegramButton');
+    const mentorButton = document.getElementById('mentorButton');
     const continueButton = document.getElementById('continueButton');
     
     // Apply configuration
@@ -561,6 +567,8 @@
         popupDescription.textContent = popupConfig.description;
         telegramButton.href = popupConfig.telegramLink;
         telegramButton.innerHTML = `<i class="fab fa-telegram"></i> ${popupConfig.telegramButtonText}`;
+        mentorButton.href = popupConfig.mentorLink;
+        mentorButton.innerHTML = `<i class="fab fa-telegram"></i> ${popupConfig.mentorButtonText}`;
         continueButton.href = popupConfig.continueLink;
         continueButton.textContent = popupConfig.continueButtonText;
     }
@@ -637,6 +645,29 @@
             custom_data: {
                 content_name: 'Telegram Join',
                 content_category: 'Social'
+            }
+        });
+    });
+    
+    // Track mentor button click
+    mentorButton.addEventListener('click', function() {
+        // Track with Meta Pixel
+        fbq('track', 'Lead', {
+            content_name: 'Mentor Contact',
+            content_category: 'Support'
+        });
+        
+        // Track with Gateway Pixel
+        cbq('track', 'Lead', {
+            event_source_url: window.location.href,
+            user_data: {
+                client_user_agent: navigator.userAgent,
+                fbp: getCookieValue('_fbp'),
+                fbc: getCookieValue('_fbc')
+            },
+            custom_data: {
+                content_name: 'Mentor Contact',
+                content_category: 'Support'
             }
         });
     });
