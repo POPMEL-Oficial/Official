@@ -44,14 +44,9 @@
     n.queue=[];t=h.createElement(e);t.async=!0;
     t.src=v;s=h.getElementsByTagName(e)[0];
     s.parentNode.insertBefore(t,s)}(window, document,'script',
-    'https://sgw.stape.au/sdk/2402334845382994722/events.js');
-    cbq('setHost', 'https://sgw.stape.au/');
-    cbq('init', '2402334845382994722');
-    
-    // Verify connection is working with debug mode
-    cbq('debug', true);
-    
-    // Send PageView with additional required parameters
+    'https://sgw.stape.ac/sdk/6270750353599129361/events.js');
+    cbq('setHost', 'https://sgw.stape.ac/');
+    cbq('init', '6270750353599129361');
     cbq('track', 'PageView', {
       event_source_url: window.location.href,
       user_data: {
@@ -594,7 +589,6 @@
         
         // Track with Gateway Pixel
         cbq('track', 'Purchase', {
-            ...eventData,
             event_id: eventId,
             event_source_url: window.location.href,
             user_data: {
@@ -602,12 +596,7 @@
                 fbp: getCookieValue('_fbp'),
                 fbc: getCookieValue('_fbc')
             },
-            custom_data: {
-                content_name: 'POPMEL App',
-                content_type: 'product',
-                content_category: 'Gaming Apps',
-                content_ids: ['POPMEL1']
-            }
+            custom_data: eventData 
         });
         
         // Show popup
