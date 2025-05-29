@@ -349,6 +349,9 @@ document.addEventListener('DOMContentLoaded', function() {
     if (typeof fbq !== 'undefined') {
         // Track outbound link clicks as conversions
         document.querySelectorAll('a').forEach(link => {
+            // Skip the main install button since it already has its own tracking
+            if (link.id === 'installButton') return;
+            
             link.addEventListener('click', function(e) {
                 if (this.href.includes('popmel33.com')) {
                     fbq('track', 'Lead', {
