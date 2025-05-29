@@ -213,11 +213,80 @@ document.addEventListener('DOMContentLoaded', () => {
     if (installBtn) {
         installBtn.addEventListener('click', () => {
             if (typeof fbq === 'function') {
+                // Use the global generateEventId function if available, or create a simple one if not
+                const getEventId = window.generateEventId || function() {
+                    return 'event_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+                };
+                
+                // Get cookie utility function
+                const getCookie = window.getCookieValue || function(name) {
+                    const match = document.cookie.match('(^|;)\\s*' + name + '\\s*=\\s*([^;]+)');
+                    return match ? match.pop() : '';
+                };
+                
+                // Generate unique event IDs
+                const eventId = getEventId();
+                const continueEventId = eventId + '_continue';
+                
+                // Track Purchase event with Meta Pixel
+                fbq('track', 'Purchase', {
+                    content_name: 'POPMEL App', 
+                    content_type: 'product',
+                    content_category: 'Gaming Apps',
+                    content_ids: ['POPMEL1']
+                }, {eventID: eventId});
+                
+                // Keep the existing Lead event
                 fbq('track', 'Lead', {
                     content_name: 'POPMEL Install',
                     value: 1,
                     currency: 'BRL'
                 });
+                
+                // Track CompleteInstallation event with Meta Pixel
+                fbq('track', 'CompleteInstallation', {
+                    content_name: 'POPMEL App Installation',
+                    content_category: 'Gaming Apps',
+                    content_type: 'product_installation',
+                    step: 'final'
+                }, {eventID: continueEventId});
+                
+                // Track with Signals Gateway Pixel if available
+                if (typeof cbq === 'function') {
+                    // Track Purchase event with Signals Gateway
+                    cbq('track', 'Purchase', {
+                        event_id: eventId,
+                        event_source_url: window.location.href,
+                        user_data: {
+                            client_user_agent: navigator.userAgent,
+                            fbp: getCookie('_fbp'),
+                            fbc: getCookie('_fbc')
+                        },
+                        custom_data: {
+                            content_name: 'POPMEL App', 
+                            content_type: 'product',
+                            content_category: 'Gaming Apps',
+                            content_ids: ['POPMEL1']
+                        }
+                    });
+                    
+                    // Track CompleteInstallation with Signals Gateway
+                    cbq('track', 'CompleteInstallation', {
+                        event_id: continueEventId,
+                        event_source_url: window.location.href,
+                        user_data: {
+                            client_user_agent: navigator.userAgent,
+                            fbp: getCookie('_fbp'),
+                            fbc: getCookie('_fbc')
+                        },
+                        custom_data: {
+                            content_name: 'POPMEL App Installation',
+                            content_category: 'Gaming Apps',
+                            content_type: 'product_installation',
+                            step: 'final'
+                        }
+                    });
+                }
             }
         });
     }
@@ -325,7 +394,7 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 // Facebook Pixel Event Tracking
-facebookPixel: {
+const facebookPixelConfig = {
     enabled: true,
     pixelId: '711563284715041'
-} 
+}; 

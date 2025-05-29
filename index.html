@@ -214,8 +214,8 @@
                 </div>
             </div>
             
-            <a href="#" class="install-btn" id="installButton">
-                <i class="fas fa-bolt"></i> Instalação Rápida
+            <a href="https://popmel33.com/main/inicio?ch=25837" class="install-btn" id="installButton">
+                <i class="fas fa-bolt"></i> Cadastre-se e reivindique seus bônus aqui!
                 <span class="install-subtext">Baixe dentro de 15 segundos</span>
             </a>
             
@@ -513,15 +513,6 @@
                     Obtenha suporte exclusivo e acesso a dicas VIP através do nosso canal oficial no Telegram. 
                     Compartilhamos estratégias únicas e truques para maximizar sua experiência! Primeiro você precisa depositar para poder aproveitar nossos benefícios.
                 </p>
-                <a href="https://t.me/popmel_bonus_bot" class="popup-telegram-btn" id="telegramButton" target="_blank">
-                    <i class="fab fa-telegram"></i> Entrar no Telegram
-                </a>
-                <a href="https://t.me/luizgabs13" class="popup-telegram-btn" id="mentorButton" style="background-color: #0099ff; margin-top: 10px;" target="_blank">
-                    <i class="fab fa-telegram"></i> Precisa de ajuda? Entre em contato com nosso mentor!
-                </a>
-                <a href="https://popmel33.com/main/inicio?ch=25837" class="popup-continue-btn" id="continueButton">
-                    Continuar para Instalação
-                </a>
             </div>
         </div>
     </div>
@@ -535,13 +526,7 @@
     const popupConfig = {
         image: "images/POPMEL Bonus.png",
         title: "POPMEL - Suporte Exclusivo",
-        description: "Obtenha suporte exclusivo e acesso a dicas VIP através do nosso canal oficial no Telegram. Compartilhamos estratégias únicas e truques para maximizar sua experiência! Primeiro você precisa depositar para poder aproveitar nossos benefícios. ",
-        telegramLink: "https://t.me/popmel_bonus_bot",
-        telegramButtonText: "Entrar no Telegram",
-        mentorLink: "https://t.me/luizgabs13",
-        mentorButtonText: "Precisa de ajuda? Entre em contato com nosso mentor!",
-        continueLink: "https://popmel33.com/main/inicio?ch=25837",
-        continueButtonText: "Continuar para Instalação"
+        description: "Obtenha suporte exclusivo e acesso a dicas VIP através do nosso canal oficial no Telegram. Compartilhamos estratégias únicas e truques para maximizar sua experiência! Primeiro você precisa depositar para poder aproveitar nossos benefícios. "
     };
     
     // Elements
@@ -551,57 +536,18 @@
     const popupImage = document.getElementById('popupImage');
     const popupTitle = document.getElementById('popupTitle');
     const popupDescription = document.getElementById('popupDescription');
-    const telegramButton = document.getElementById('telegramButton');
-    const mentorButton = document.getElementById('mentorButton');
-    const continueButton = document.getElementById('continueButton');
     
     // Apply configuration
     function applyPopupConfig() {
         popupImage.src = popupConfig.image;
         popupTitle.textContent = popupConfig.title;
         popupDescription.textContent = popupConfig.description;
-        telegramButton.href = popupConfig.telegramLink;
-        telegramButton.innerHTML = `<i class="fab fa-telegram"></i> ${popupConfig.telegramButtonText}`;
-        mentorButton.href = popupConfig.mentorLink;
-        mentorButton.innerHTML = `<i class="fab fa-telegram"></i> ${popupConfig.mentorButtonText}`;
-        continueButton.href = popupConfig.continueLink;
-        continueButton.textContent = popupConfig.continueButtonText;
     }
     
     // Initialize popup
     applyPopupConfig();
     
-    // Short popup when install button is clicked
-    installButton.addEventListener('click', function(e) {
-        e.preventDefault();
-        
-        // Track events
-        const eventId = generateEventId();
-        const eventData = {
-            content_name: 'POPMEL App', 
-            content_type: 'product',
-            content_category: 'Gaming Apps',
-            content_ids: ['POPMEL1']
-        };
-        
-        // Track with Meta Pixel
-        fbq('track', 'Purchase', eventData, {eventID: eventId});
-        
-        // Track with Gateway Pixel
-        cbq('track', 'Purchase', {
-            event_id: eventId,
-            event_source_url: window.location.href,
-            user_data: {
-                client_user_agent: navigator.userAgent,
-                fbp: getCookieValue('_fbp'),
-                fbc: getCookieValue('_fbc')
-            },
-            custom_data: eventData 
-        });
-        
-        // Show popup
-        popupOverlay.style.display = 'flex';
-    });
+    // Install button now redirects directly - no need to prevent default
     
     // Close popup
     popupClose.addEventListener('click', function() {
@@ -613,83 +559,6 @@
         if (e.target === popupOverlay) {
             popupOverlay.style.display = 'none';
         }
-    });
-    
-    // Track telegram button click
-    telegramButton.addEventListener('click', function() {
-        // Track with Meta Pixel
-        fbq('track', 'Lead', {
-            content_name: 'Telegram Join',
-            content_category: 'Social'
-        });
-        
-        // Track with Gateway Pixel
-        cbq('track', 'Lead', {
-            event_source_url: window.location.href,
-            user_data: {
-                client_user_agent: navigator.userAgent,
-                fbp: getCookieValue('_fbp'),
-                fbc: getCookieValue('_fbc')
-            },
-            custom_data: {
-                content_name: 'Telegram Join',
-                content_category: 'Social'
-            }
-        });
-    });
-    
-    // Track mentor button click
-    mentorButton.addEventListener('click', function() {
-        // Track with Meta Pixel
-        fbq('track', 'Lead', {
-            content_name: 'Mentor Contact',
-            content_category: 'Support'
-        });
-        
-        // Track with Gateway Pixel
-        cbq('track', 'Lead', {
-            event_source_url: window.location.href,
-            user_data: {
-                client_user_agent: navigator.userAgent,
-                fbp: getCookieValue('_fbp'),
-                fbc: getCookieValue('_fbc')
-            },
-            custom_data: {
-                content_name: 'Mentor Contact',
-                content_category: 'Support'
-            }
-        });
-    });
-    
-    // Track continue button click
-    continueButton.addEventListener('click', function() {
-        // Generate unique ID for this specific event
-        const continueEventId = generateEventId() + '_continue';
-        
-        // Track with Meta Pixel - with different event name and ID
-        fbq('track', 'CompleteInstallation', {
-            content_name: 'POPMEL App Installation',
-            content_category: 'Gaming Apps',
-            content_type: 'product_installation',
-            step: 'final'
-        }, {eventID: continueEventId});
-        
-        // Track with Gateway Pixel - with different event name and ID
-        cbq('track', 'CompleteInstallation', {
-            event_id: continueEventId,
-            event_source_url: window.location.href,
-            user_data: {
-                client_user_agent: navigator.userAgent,
-                fbp: getCookieValue('_fbp'),
-                fbc: getCookieValue('_fbc')
-            },
-            custom_data: {
-                content_name: 'POPMEL App Installation',
-                content_category: 'Gaming Apps',
-                content_type: 'product_installation',
-                step: 'final'
-            }
-        });
     });
     </script>
 </body>
