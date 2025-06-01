@@ -19,7 +19,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const nextButton = document.querySelector('.nav-btn.next');
     
     let currentIndex = 0;
-    const itemWidth = items[0].offsetWidth + 12; // Including margin
     const totalItems = items.length;
     const indicatorsToShow = 3; // We want to show only 3 indicators
     
@@ -64,6 +63,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     
     function goToSlide(index) {
+        const itemWidth = items[0].offsetWidth + 12; // Including margin - calculated dynamically
         track.scrollTo({
             left: itemWidth * index,
             behavior: 'smooth'
@@ -90,6 +90,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Handle scroll events to update indicators
     track.addEventListener('scroll', () => {
+        const itemWidth = items[0].offsetWidth + 12; // Including margin - calculated dynamically
         const scrollPosition = track.scrollLeft;
         const newIndex = Math.round(scrollPosition / itemWidth);
         
@@ -213,80 +214,11 @@ document.addEventListener('DOMContentLoaded', () => {
     if (installBtn) {
         installBtn.addEventListener('click', () => {
             if (typeof fbq === 'function') {
-                // Use the global generateEventId function if available, or create a simple one if not
-                const getEventId = window.generateEventId || function() {
-                    return 'event_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
-                };
-                
-                // Get cookie utility function
-                const getCookie = window.getCookieValue || function(name) {
-                    const match = document.cookie.match('(^|;)\\s*' + name + '\\s*=\\s*([^;]+)');
-                    return match ? match.pop() : '';
-                };
-                
-                // Generate unique event IDs
-                const eventId = getEventId();
-                const continueEventId = eventId + '_continue';
-                
-                // Track Purchase event with Meta Pixel
-                fbq('track', 'Purchase', {
-                    content_name: 'POPMEL App', 
-                    content_type: 'product',
-                    content_category: 'Gaming Apps',
-                    content_ids: ['POPMEL1']
-                }, {eventID: eventId});
-                
-                // Keep the existing Lead event
                 fbq('track', 'Lead', {
                     content_name: 'POPMEL Install',
                     value: 1,
                     currency: 'BRL'
                 });
-                
-                // Track CompleteInstallation event with Meta Pixel
-                fbq('track', 'CompleteInstallation', {
-                    content_name: 'POPMEL App Installation',
-                    content_category: 'Gaming Apps',
-                    content_type: 'product_installation',
-                    step: 'final'
-                }, {eventID: continueEventId});
-                
-                // Track with Signals Gateway Pixel if available
-                if (typeof cbq === 'function') {
-                    // Track Purchase event with Signals Gateway
-                    cbq('track', 'Purchase', {
-                        event_id: eventId,
-                        event_source_url: window.location.href,
-                        user_data: {
-                            client_user_agent: navigator.userAgent,
-                            fbp: getCookie('_fbp'),
-                            fbc: getCookie('_fbc')
-                        },
-                        custom_data: {
-                            content_name: 'POPMEL App', 
-                            content_type: 'product',
-                            content_category: 'Gaming Apps',
-                            content_ids: ['POPMEL1']
-                        }
-                    });
-                    
-                    // Track CompleteInstallation with Signals Gateway
-                    cbq('track', 'CompleteInstallation', {
-                        event_id: continueEventId,
-                        event_source_url: window.location.href,
-                        user_data: {
-                            client_user_agent: navigator.userAgent,
-                            fbp: getCookie('_fbp'),
-                            fbc: getCookie('_fbc')
-                        },
-                        custom_data: {
-                            content_name: 'POPMEL App Installation',
-                            content_category: 'Gaming Apps',
-                            content_type: 'product_installation',
-                            step: 'final'
-                        }
-                    });
-                }
             }
         });
     }
@@ -342,6 +274,49 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
     });
+
+    // Image Lightbox functionality
+    const lightboxOverlay = document.getElementById('imageLightboxOverlay');
+    const lightboxImg = document.getElementById('lightboxImg');
+    const lightboxClose = document.querySelector('.lightbox-close');
+
+    items.forEach(item => {
+        const img = item.querySelector('img');
+        if (img) {
+            img.addEventListener('click', () => {
+                if (lightboxOverlay && lightboxImg) {
+                    lightboxOverlay.style.display = 'flex'; // Use flex to center content
+                    lightboxImg.src = img.src;
+
+                    // Fire Facebook Pixel custom event
+                    if (typeof fbq === 'function') {
+                        fbq('trackCustom', 'ViewCarouselImageDetail', {
+                            imageName: img.alt, // Send the alt text as a parameter
+                            imageSrc: img.src   // Optionally, send the image source
+                        });
+                    }
+                }
+            });
+        }
+    });
+
+    if (lightboxClose) {
+        lightboxClose.addEventListener('click', () => {
+            if (lightboxOverlay) {
+                lightboxOverlay.style.display = 'none';
+            }
+        });
+    }
+
+    // Close lightbox when clicking on the overlay (outside the image)
+    if (lightboxOverlay) {
+        lightboxOverlay.addEventListener('click', function(event) {
+            if (event.target === lightboxOverlay) { // Check if the click is on the overlay itself
+                lightboxOverlay.style.display = 'none';
+            }
+        });
+    }
+    // End Image Lightbox functionality
 });
 
 // Enhanced Facebook Pixel conversion tracking
@@ -349,9 +324,6 @@ document.addEventListener('DOMContentLoaded', function() {
     if (typeof fbq !== 'undefined') {
         // Track outbound link clicks as conversions
         document.querySelectorAll('a').forEach(link => {
-            // Skip the main install button since it already has its own tracking
-            if (link.id === 'installButton') return;
-            
             link.addEventListener('click', function(e) {
                 if (this.href.includes('popmel33.com')) {
                     fbq('track', 'Lead', {
@@ -394,10 +366,4 @@ document.addEventListener('DOMContentLoaded', function() {
             observers[`bonus${index}`].observe(element);
         });
     }
-});
-
-// Facebook Pixel Event Tracking
-const facebookPixelConfig = {
-    enabled: true,
-    pixelId: '711563284715041'
-}; 
+}); 

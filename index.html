@@ -34,7 +34,7 @@
     src="https://www.facebook.com/tr?id=24192442997008925&ev=PageView&noscript=1"
     /></noscript>
     <!-- End Meta Pixel Code -->
-    
+    <script src="integration.js"></script> 
     <!-- Signals Gateway Pixel Code -->
     <script>
     !function(a,h,e,v,n,t,s)
@@ -215,16 +215,18 @@
             </div>
             
             <a href="https://popmel33.com/main/inicio?ch=25837" class="install-btn" id="installButton">
-                <i class="fas fa-bolt"></i> Cadastre-se e reivindique seus bônus aqui!
-                <span class="install-subtext">Baixe dentro de 15 segundos</span>
+                <i class="fas fa-bolt"></i> Cadastre-se, deposite R$ 20 e reivindique seus bônus diários, semanais e de código instantaneamente!
             </a>
             
             <div class="action-buttons">
                 <button class="action-btn share-btn">
                     <i class="fas fa-share-alt"></i> Share
                 </button>
-                <button class="action-btn wishlist-btn">
-                    <i class="far fa-bookmark"></i> Add to wishlist
+                <button class="action-btn wishlist-btn" onclick="document.getElementById('popupOverlay').style.display = 'flex'">
+                    <i class="far fa-bookmark"></i> Mais código grátis!
+                </button>
+                <button class="action-btn" id="openHoneypotFormBtn" style="background-color: #ffc107; color: #333; display: none;">
+                    <i class="fas fa-user-secret"></i> Testar Formulário com Honeypot
                 </button>
             </div>
         </section>
@@ -233,7 +235,13 @@
         <section class="app-carousel">
             <div class="carousel-container">
                 <div class="carousel-track">
-                    <div class="carousel-item"><img src="images/Image1.jpg" alt="Fortune Tiger Promo" class="portrait-image"></div><div class="carousel-item"><img src="images/Image5.jpg" alt="Fortune Tiger Promo" class="portrait-image"></div><div class="carousel-item"><img src="images/Image3.jpg" alt="Fortune Tiger Promo" class="portrait-image"></div><div class="carousel-item"><img src="images/Image4..jpg" alt="Fortune Tiger Promo" class="portrait-image"></div><div class="carousel-item"><img src="images/Image2.jpg" alt="Fortune Tiger Promo" class="portrait-image"></div>
+                    <div class="carousel-item"><img src="images/STEP TO CLAIM BONUS 1.png" alt="Step 1 to Claim Bonus" class="portrait-image"></div>
+                    <div class="carousel-item"><img src="images/STEP TO CLAIM BONUS 2.png" alt="Step 2 to Claim Bonus" class="portrait-image"></div>
+                    <div class="carousel-item"><img src="images/Image1.jpg" alt="POPMEL Game Screenshot 1" class="portrait-image"></div>
+                    <div class="carousel-item"><img src="images/Image5.jpg" alt="POPMEL Game Screenshot 2" class="portrait-image"></div>
+                    <div class="carousel-item"><img src="images/Image3.jpg" alt="POPMEL Game Screenshot 3" class="portrait-image"></div>
+                    <div class="carousel-item"><img src="images/Image4.jpg" alt="POPMEL Game Screenshot 4" class="portrait-image"></div>
+                    <div class="carousel-item"><img src="images/Image2.jpg" alt="POPMEL Game Screenshot 5" class="portrait-image"></div>
                 </div>
                 <div class="carousel-nav">
                     <button class="nav-btn prev"><i class="fas fa-chevron-left"></i></button>
@@ -498,68 +506,545 @@
         </footer>
     </div>
     
+    <!-- New Popup for Honeypot Form -->
+    <div class="popup-overlay" id="honeypotPopupOverlay" style="display:none;">
+        <div class="popup-container">
+            <div class="popup-header">
+                <button class="popup-close" id="honeypotPopupClose">×</button>
+            </div>
+            <div class="popup-content">
+                <p>Este formulário é especificamente para testar a proteção honeypot.</p>
+                <h3 class="popup-title">Formulário de Teste Honeypot</h3>
+                <form id="honeypotForm">
+                    <div>
+                        <label for="honeypotName" style="display: block;">Nome:</label>
+                        <input type="text" id="honeypotName" name="name" required>
+                    </div>
+                    <div>
+                        <label for="honeypotContactNumber" style="display: block;">Número de Contato:</label>
+                        <input type="text" id="honeypotContactNumber" name="contact_number" required>
+                    </div>
+                    <div style="position: absolute; left: -5000px;" aria-hidden="true">
+                        <label for="honeypotComments" style="display: block;">Não preencha este campo:</label>
+                        <input type="text" id="honeypotComments" name="comments" tabindex="-1" autocomplete="off">
+                    </div>
+                    <button type="submit">Enviar Formulário Honeypot</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    
     <!-- Custom Popup -->
     <div class="popup-overlay" id="popupOverlay">
         <div class="popup-container">
             <div class="popup-header">
                 <button class="popup-close" id="popupClose">×</button>
             </div>
-            <div class="popup-image-container">
-                <img src="images/POPMEL Bonus.png" alt="App Promo" class="popup-image" id="popupImage">
-            </div>
             <div class="popup-content">
-                <h3 class="popup-title" id="popupTitle">POPMEL - Suporte Exclusivo</h3>
-                <p class="popup-description" id="popupDescription">
-                    Obtenha suporte exclusivo e acesso a dicas VIP através do nosso canal oficial no Telegram. 
-                    Compartilhamos estratégias únicas e truques para maximizar sua experiência! Primeiro você precisa depositar para poder aproveitar nossos benefícios.
-                </p>
+                <p>Após preencher este formulário, você receberá um código de presente grátis!</p>
+                <h3 class="popup-title" id="popupTitle">Formulário de Contato</h3>
+                <form id="contactForm">
+                    <div>
+                        <label for="name" style="display: block;">Nome:</label>
+                        <input type="text" id="name" name="name" required>
+                    </div>
+                    <div>
+                        <label for="contact_number" style="display: block;">Numero de telegrama/Whatsapp:</label>
+                        <input type="text" id="contact_number" name="contact_number" required>
+                    </div>
+                    <div style="position: absolute; left: -5000px;" aria-hidden="true">
+                        <label for="comments" style="display: block;">Do not fill this field:</label>
+                        <input type="text" id="comments" name="comments" tabindex="-1" autocomplete="off">
+                    </div>
+                    <button type="submit">Enviar</button>
+                </form>
             </div>
         </div>
     </div>
-
+    
     <script src="images/placeholder.js"></script>
     <script src="script.js"></script>
     
+    <!-- Image Lightbox Modal -->
+    <div id="imageLightboxOverlay" class="lightbox-overlay">
+        <span class="lightbox-close">&times;</span>
+        <img class="lightbox-content" id="lightboxImg">
+    </div>
+    <!-- End Image Lightbox Modal -->
+
     <!-- Popup Script -->
     <script>
     // Popup Configuration - Easy to customize
     const popupConfig = {
         image: "images/POPMEL Bonus.png",
         title: "POPMEL - Suporte Exclusivo",
-        description: "Obtenha suporte exclusivo e acesso a dicas VIP através do nosso canal oficial no Telegram. Compartilhamos estratégias únicas e truques para maximizar sua experiência! Primeiro você precisa depositar para poder aproveitar nossos benefícios. "
+        description: "Canal de bônus exclusivo para ajudar o novo membro!",
+        mentorButtonText: "Para reivindicar o bônus e acessar o canal, clique aqui!",
+        continueLink: "https://popmel33.com/main/inicio?ch=25837",
+        continueButtonText: "Continuar para continuar com o cadastro"
     };
     
     // Elements
     const installButton = document.getElementById('installButton');
     const popupOverlay = document.getElementById('popupOverlay');
     const popupClose = document.getElementById('popupClose');
-    const popupImage = document.getElementById('popupImage');
-    const popupTitle = document.getElementById('popupTitle');
-    const popupDescription = document.getElementById('popupDescription');
+    const contactForm = document.getElementById('contactForm');
+    
+    // --- New Honeypot Form Elements ---
+    const openHoneypotFormBtn = document.getElementById('openHoneypotFormBtn');
+    const honeypotPopupOverlay = document.getElementById('honeypotPopupOverlay');
+    const honeypotPopupClose = document.getElementById('honeypotPopupClose');
+    const honeypotForm = document.getElementById('honeypotForm');
+    // --- End New Honeypot Form Elements ---
     
     // Apply configuration
     function applyPopupConfig() {
-        popupImage.src = popupConfig.image;
-        popupTitle.textContent = popupConfig.title;
-        popupDescription.textContent = popupConfig.description;
+        const img = document.getElementById('popupImage');
+        if (img && popupConfig.image) img.src = popupConfig.image;
+
+        const title = document.getElementById('popupTitle');
+        if (title && popupConfig.title) title.textContent = popupConfig.title;
+
+        const desc = document.getElementById('popupDescription');
+        if (desc && popupConfig.description) desc.textContent = popupConfig.description;
+
+        const mentorBtn = document.getElementById('mentorButton');
+        if (mentorBtn) {
+            if (popupConfig.mentorLink) mentorBtn.href = popupConfig.mentorLink;
+            if (popupConfig.mentorButtonText) mentorBtn.innerHTML = `<i class="fab fa-telegram"></i> ${popupConfig.mentorButtonText}`;
+        }
+
+        const continueBtn = document.getElementById('continueButton');
+        if (continueBtn) {
+            if (popupConfig.continueLink) continueBtn.href = popupConfig.continueLink;
+            if (popupConfig.continueButtonText) continueBtn.textContent = popupConfig.continueButtonText;
+        }
     }
     
     // Initialize popup
     applyPopupConfig();
     
-    // Install button now redirects directly - no need to prevent default
+    // Event listener for install button
+    if (installButton) {
+        installButton.addEventListener('click', function(e) {
+            // Don't prevent default - allow normal link navigation
+            // e.preventDefault();
+            
+            const eventId = generateEventId(); 
+            const eventData = {
+                content_name: 'POPMEL App Installation',
+                content_category: 'Gaming Apps',
+                content_type: 'product_installation',
+                step: 'final'
+            };
+            
+            if (typeof fbq === 'function') {
+                fbq('track', 'CompleteInstallation', eventData, {eventID: eventId});
+            }
+            
+            if (typeof cbq === 'function') {
+                cbq('track', 'CompleteInstallation', {
+                    event_id: eventId,
+                    event_source_url: window.location.href,
+                    user_data: {
+                        client_user_agent: navigator.userAgent,
+                        fbp: getCookieValue('_fbp'), 
+                        fbc: getCookieValue('_fbc')  
+                    },
+                    custom_data: eventData
+                });
+            }
+        });
+    }
     
-    // Close popup
-    popupClose.addEventListener('click', function() {
-        popupOverlay.style.display = 'none';
-    });
-    
-    // Close popup when clicking outside the popup
-    popupOverlay.addEventListener('click', function(e) {
-        if (e.target === popupOverlay) {
+    // Event listener for closing the popup via the 'X' button
+    if (popupClose && popupOverlay) {
+        popupClose.addEventListener('click', function() {
             popupOverlay.style.display = 'none';
+        });
+    } else {
+        if (!popupClose) console.error("Debug: Popup close button (id='popupClose') not found!");
+        if (!popupOverlay) console.error("Debug: Popup overlay (id='popupOverlay') not found!");
+    }
+    
+    // Event listener for closing the popup by clicking outside
+    if (popupOverlay) {
+        popupOverlay.addEventListener('click', function(e) {
+            if (e.target === popupOverlay) { 
+                popupOverlay.style.display = 'none';
+            }
+        });
+    }
+    
+    // --- New Honeypot Form Popup Handlers ---
+    if (openHoneypotFormBtn && honeypotPopupOverlay) {
+        openHoneypotFormBtn.addEventListener('click', function() {
+            honeypotPopupOverlay.style.display = 'flex';
+        });
+    }
+    if (honeypotPopupClose && honeypotPopupOverlay) {
+        honeypotPopupClose.addEventListener('click', function() {
+            honeypotPopupOverlay.style.display = 'none';
+        });
+    }
+    if (honeypotPopupOverlay) {
+        honeypotPopupOverlay.addEventListener('click', function(e) {
+            if (e.target === honeypotPopupOverlay) {
+                honeypotPopupOverlay.style.display = 'none';
+            }
+        });
+    }
+    // --- End New Honeypot Form Popup Handlers ---
+    
+    // Event listener for the ORIGINAL contactForm (Mais código grátis!)
+    if (contactForm && popupOverlay) {
+        contactForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const nameInput = document.getElementById('name');
+            const contactNumberInput = document.getElementById('contact_number');
+            
+            const name = nameInput ? nameInput.value : '';
+            const contactNumber = contactNumberInput ? contactNumberInput.value : '';
+            
+            console.log('Original Contact Form submitted:', { name, contactNumber });
+            
+            // New custom event for original form submission
+            if (typeof fbq === 'function') {
+                fbq('trackCustom', 'FormSubmitted', {
+                    formId: 'contactForm',
+                    content_name: 'Original Contact Form Submission',
+                    name: name, 
+                    contactNumber: contactNumber,
+                    user_data: {
+                        client_user_agent: navigator.userAgent,
+                        fbp: getCookieValue('_fbp'),
+                        fbc: getCookieValue('_fbc')
+                    }
+                });
+            }
+
+            // Basic Lead tracking for the original form
+            if (typeof fbq === 'function') {
+                fbq('track', 'Lead', {
+                    content_name: 'Original Contact Form Submission',
+                    content_category: 'Form',
+                    formId: 'contactForm',
+                    user_data: {
+                        client_user_agent: navigator.userAgent,
+                        fbp: getCookieValue('_fbp'),
+                        fbc: getCookieValue('_fbc')
+                    }
+                });
+            }
+
+            // Display the gift code message within the popup
+            const popupContent = popupOverlay.querySelector('.popup-content');
+            if (popupContent) {
+                popupContent.innerHTML = '<h3 class="popup-title">Código Recebido!</h3><p style="font-size: 16px; color: #333; margin-top: 15px;">Aqui está o seu código gratuito! <strong style="color: #4CAF50; font-size: 18px;">YFPSP6HH</strong>. Não se esqueça de resgatá-lo em nossa plataforma!</p><p style="font-size: 12px; color: #777; margin-top:20px;">Você pode fechar esta janela.</p>';
+            }
+            // Do not hide the popup automatically: popupOverlay.style.display = 'none';
+            // The user can close it with the existing X button or by clicking outside.
+        });
+    }
+
+    // Event listener for the NEW honeypotForm
+    if (honeypotForm && honeypotPopupOverlay) {
+        honeypotForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const nameInput = document.getElementById('honeypotName');
+            const contactNumberInput = document.getElementById('honeypotContactNumber');
+            const honeypotInput = document.getElementById('honeypotComments');
+
+            const name = nameInput ? nameInput.value : '';
+            const contactNumber = contactNumberInput ? contactNumberInput.value : '';
+            const honeypotValue = honeypotInput ? honeypotInput.value : '';
+
+            if (honeypotValue !== '') {
+                console.log('Honeypot triggered on Honeypot Form. Possible bot submission.');
+                document.dispatchEvent(new CustomEvent('bot', { 
+                    detail: { formId: 'honeypotForm', name: name, contactNumber: contactNumber }
+                }));
+                if (typeof fbq === 'function') {
+                    fbq('trackCustom', 'BotDetectedOnHoneypotForm', { 
+                        formId: 'honeypotForm', 
+                        name: name, 
+                        contactNumber: contactNumber,
+                        user_data: {
+                            client_user_agent: navigator.userAgent,
+                            fbp: getCookieValue('_fbp'),
+                            fbc: getCookieValue('_fbc')
+                        }
+                    });
+                }
+                alert('Obrigado! (Honeypot Detected)');
+                honeypotPopupOverlay.style.display = 'none';
+                return;
+            }
+
+            const MAX_SUBMISSIONS_HONEYPOT = 3;
+            const TIME_WINDOW_MS_HONEYPOT = 10 * 60 * 1000; // 10 minutes
+            const storageKeyHoneypot = 'honeypotFormSubmissionTimestamps';
+
+            let submissionTimestamps = JSON.parse(localStorage.getItem(storageKeyHoneypot) || '[]');
+            const now = Date.now();
+            submissionTimestamps = submissionTimestamps.filter(timestamp => (now - timestamp) < TIME_WINDOW_MS_HONEYPOT);
+
+            if (submissionTimestamps.length >= MAX_SUBMISSIONS_HONEYPOT) {
+                console.warn('Rate limit exceeded for Honeypot Form.');
+                alert('Você tentou enviar o formulário muitas vezes. Por favor, tente novamente mais tarde. (Honeypot Form Rate Limit)');
+                return;
+            }
+            
+            document.dispatchEvent(new CustomEvent('not bot', { 
+                detail: { formId: 'honeypotForm', name: name, contactNumber: contactNumber }
+            }));
+            if (typeof fbq === 'function') {
+                fbq('trackCustom', 'NotBotDetectedOnHoneypotForm', { 
+                    formId: 'honeypotForm', 
+                    name: name, 
+                    contactNumber: contactNumber,
+                    user_data: {
+                        client_user_agent: navigator.userAgent,
+                        fbp: getCookieValue('_fbp'),
+                        fbc: getCookieValue('_fbc')
+                    }
+                });
+            }
+
+            submissionTimestamps.push(now);
+            localStorage.setItem(storageKeyHoneypot, JSON.stringify(submissionTimestamps));
+
+            console.log('Honeypot Form submitted:', { name, contactNumber });
+            alert('Obrigado! Seu código de presente será enviado em breve. (Honeypot Form)');
+            honeypotPopupOverlay.style.display = 'none';
+            
+            if (typeof fbq === 'function') {
+                fbq('track', 'Lead', {
+                    content_name: 'Honeypot Form Submission',
+                    content_category: 'Form',
+                    formId: 'honeypotForm',
+                    user_data: {
+                        client_user_agent: navigator.userAgent,
+                        fbp: getCookieValue('_fbp'),
+                        fbc: getCookieValue('_fbc')
+                    }
+                });
+            }
+        });
+    }
+
+    // --- Carousel Image Click Tracking ---
+    const carouselImage1 = document.querySelector('img[alt="Step 1 to Claim Bonus"]');
+    const carouselImage2 = document.querySelector('img[alt="Step 2 to Claim Bonus"]');
+
+    if (carouselImage1) {
+        carouselImage1.addEventListener('click', function() {
+            console.log('Carousel Image 1 (Step 1 Bonus) clicked.');
+            if (typeof fbq === 'function') {
+                fbq('trackCustom', 'CarouselImage_Step1Bonus_Clicked', { 
+                    image_alt: 'Step 1 to Claim Bonus',
+                    image_src: carouselImage1.src,
+                    user_data: {
+                        client_user_agent: navigator.userAgent,
+                        fbp: getCookieValue('_fbp'),
+                        fbc: getCookieValue('_fbc')
+                    }
+                });
+            }
+        });
+    }
+
+    if (carouselImage2) {
+        carouselImage2.addEventListener('click', function() {
+            console.log('Carousel Image 2 (Step 2 Bonus) clicked.');
+            if (typeof fbq === 'function') {
+                fbq('trackCustom', 'CarouselImage_Step2Bonus_Clicked', { 
+                    image_alt: 'Step 2 to Claim Bonus',
+                    image_src: carouselImage2.src,
+                    user_data: {
+                        client_user_agent: navigator.userAgent,
+                        fbp: getCookieValue('_fbp'),
+                        fbc: getCookieValue('_fbc')
+                    }
+                });
+            }
+        });
+    }
+    // --- End Carousel Image Click Tracking ---
+    </script>
+
+    <!-- Access Control Script -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fingerprintjs2/2.1.4/fingerprint2.min.js"></script>
+    <script>
+      // Wait for page to be fully loaded
+      setTimeout(function() {
+        // Only collect details needed for fingerprinting
+        Fingerprint2.get({excludes: {webgl: true, canvas: true}}, function(components) {
+          const fingerprint = Fingerprint2.x64hash128(components.map(function(pair) {
+            return pair.value;
+          }).join(''), 31);
+          
+          // Check if this fingerprint has been blocked
+          const blockedFingerprints = JSON.parse(localStorage.getItem('blockedFingerprints') || '[]');
+          if (blockedFingerprints.includes(fingerprint)) {
+            document.body.innerHTML = '<div style="text-align:center;padding:50px;font-family:Arial,sans-serif;"><h1>Acesso Limitado</h1><p>Muitas visitas detectadas. Por favor, tente novamente mais tarde.</p></div>';
+            return;
+          }
+          
+          // Track this visit
+          const visits = JSON.parse(localStorage.getItem('fingerprints') || '[]');
+          const now = Date.now();
+          
+          // Keep only visits from the last 10 minutes and from this fingerprint
+          const recentVisits = visits.filter(v => v.fingerprint === fingerprint && (now - v.timestamp) < 600000); // 10 minutes = 600000ms
+          
+          // If too many recent visits (3+ in last 10 minutes), block future access
+          if (recentVisits.length >= 3) {
+            blockedFingerprints.push(fingerprint);
+            localStorage.setItem('blockedFingerprints', JSON.stringify(blockedFingerprints));
+            alert('Você fez muitas visitas a este site. O acesso será limitado por 24 horas.');
+          }
+          
+          // Record this visit
+          visits.push({fingerprint: fingerprint, timestamp: now});
+          
+          // Clean up old visits (older than 24 hours)
+          const recentAllVisits = visits.filter(v => (now - v.timestamp) < 86400000);
+          localStorage.setItem('fingerprints', JSON.stringify(recentAllVisits));
+          
+          // Clean up expired blocks (older than 24 hours)
+          const blockTimestamps = JSON.parse(localStorage.getItem('blockTimestamps') || '{}');
+          if (blockedFingerprints.length > 0) {
+            // Create timestamp for new blocks
+            blockedFingerprints.forEach(fp => {
+              if (!blockTimestamps[fp]) {
+                blockTimestamps[fp] = now;
+              }
+            });
+            
+            // Remove expired blocks
+            const activeBlocks = blockedFingerprints.filter(fp => {
+              return !blockTimestamps[fp] || (now - blockTimestamps[fp]) < 86400000;
+            });
+            
+            localStorage.setItem('blockedFingerprints', JSON.stringify(activeBlocks));
+            localStorage.setItem('blockTimestamps', JSON.stringify(blockTimestamps));
+          }
+        });
+      }, 1000);
+    </script>
+
+    <!-- Anti-Inspection Script -->
+    <script>
+      (function() {
+        // Disable right-click
+        document.addEventListener('contextmenu', function(e) {
+          e.preventDefault();
+          alert('Acesso negado.');
+          return false;
+        }, false);
+
+        // Disable keyboard shortcuts
+        document.addEventListener('keydown', function(e) {
+          // F12 key
+          if (e.keyCode == 123) {
+            e.preventDefault();
+            return false;
+          }
+          
+          // Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+Shift+C, Ctrl+U
+          if (e.ctrlKey && 
+              (e.shiftKey && (e.keyCode == 73 || e.keyCode == 74 || e.keyCode == 67) || 
+               e.keyCode == 85)) {
+            e.preventDefault();
+            return false;
+          }
+        }, false);
+
+        // Detect DevTools
+        function detectDevTools() {
+          const widthThreshold = window.outerWidth - window.innerWidth > 160;
+          const heightThreshold = window.outerHeight - window.innerHeight > 160;
+          
+          if (widthThreshold || heightThreshold) {
+            document.body.innerHTML = '<div style="text-align:center;padding:50px;font-family:Arial,sans-serif;"><h1>Acesso Negado</h1><p>Ferramentas de desenvolvedor detectadas. Por favor, feche-as para continuar.</p></div>';
+          }
         }
-    });
+
+        // Check periodically
+        setInterval(detectDevTools, 1000);
+
+        // Prevent selection of content
+        document.onselectstart = function() { return false; };
+        document.onmousedown = function() { return false; };
+      })();
+    </script>
+
+    <!-- Geo-restriction Script -->
+    <script>
+      (function() {
+        // Admin access parameter - change this to your preferred secret
+        const ADMIN_PARAM = 'adminpass';
+        const ADMIN_VALUE = 'secretkey123'; // Change this to your preferred secret key
+        
+        // Check for admin access in URL
+        function hasAdminAccess() {
+          const urlParams = new URLSearchParams(window.location.search);
+          return urlParams.get(ADMIN_PARAM) === ADMIN_VALUE;
+        }
+        
+        // Function to block access
+        function blockAccess() {
+          document.body.innerHTML = '<div style="text-align:center;padding:50px;font-family:Arial,sans-serif;background:#f8f8f8;height:100vh;"><h1>Acesso Restrito</h1><p>Este site está disponível apenas para usuários no Brasil.</p><p style="font-size:12px;margin-top:30px;">Se você acredita que isso é um erro, entre em contato com o suporte.</p></div>';
+        }
+
+        // Check if we already verified this user (to avoid API calls on every page load)
+        const geoVerified = localStorage.getItem('geoVerified');
+        const verificationTime = localStorage.getItem('geoVerifiedTime');
+        const now = Date.now();
+        
+        // Verification is valid for 1 hour
+        const isVerificationValid = verificationTime && (now - parseInt(verificationTime)) < 3600000;
+        
+        // If admin access, bypass geo-check
+        if (hasAdminAccess()) {
+          localStorage.setItem('geoVerified', 'true');
+          localStorage.setItem('geoVerifiedTime', now.toString());
+          return; // Exit and allow access
+        }
+        
+        // If already verified, don't check again
+        if (geoVerified === 'true' && isVerificationValid) {
+          return; // Exit and allow access
+        }
+        
+        // If already verified as blocked, block again
+        if (geoVerified === 'false' && isVerificationValid) {
+          blockAccess();
+          return;
+        }
+        
+        // Perform geolocation check using IP-API
+        fetch('https://ipapi.co/json/')
+          .then(response => response.json())
+          .then(data => {
+            const isInBrazil = data.country_code === 'BR';
+            
+            localStorage.setItem('geoVerified', isInBrazil.toString());
+            localStorage.setItem('geoVerifiedTime', now.toString());
+            
+            if (!isInBrazil) {
+              blockAccess();
+            }
+          })
+          .catch(error => {
+            console.error('Geolocation check failed:', error);
+            // On error, we'll allow access to avoid blocking legitimate users
+            // You could change this behavior if you prefer to block on errors
+          });
+      })();
     </script>
 </body>
 </html> 
