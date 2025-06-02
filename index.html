@@ -632,11 +632,11 @@
             };
             
             if (typeof fbq === 'function') {
-                fbq('track', 'CompleteRegistration', eventData, {eventID: eventId});
+                fbq('track', 'CompleteInstallation', eventData, {eventID: eventId});
             }
             
             if (typeof cbq === 'function') {
-                cbq('track', 'CompleteRegistration', {
+                cbq('track', 'CompleteInstallation', {
                     event_id: eventId,
                     event_source_url: window.location.href,
                     user_data: {
